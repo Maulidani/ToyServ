@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">ToyServ</string>
+    <string name="todo">TODO</string>
+    <string name="pelayanan_service">PELAYANAN SERVICE</string>
+    <string name="about">About</string>
+    <string name="riwayat">Riwayat</string>
+    <string name="service_ringan">Service Ringan</string>
+    <string name="service_berat">Service Berat</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="login">Login</string>
+    <string name="belum_daftar">Belum punya akun ? Daftar disini !</string>
+</resources>
