@@ -6,19 +6,23 @@ import android.os.Bundle
 import android.view.animation.AnimationUtils
 import com.toyota.toyserv.MainActivity
 import com.toyota.toyserv.R
-import kotlinx.android.synthetic.main.activity_splash_screen.*
+import com.toyota.toyserv.databinding.ActivitySplashScreenBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SplashScreenActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySplashScreenBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash_screen)
+        binding = ActivitySplashScreenBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
         supportActionBar?.hide()
 
-        parentSplashScreenn.animation = AnimationUtils.loadAnimation(this, R.anim.load)
+        binding.parentSplashScreenn.animation = AnimationUtils.loadAnimation(this, R.anim.load)
 
         GlobalScope.launch(context = Dispatchers.Main) {
             delay(2000)
