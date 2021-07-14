@@ -14,13 +14,12 @@
         android:theme="@style/Theme.ToyServ"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".ui.HistoryActivity" />
-        <activity android:name=".ui.AboutActivity" />
-        <activity android:name=".ui.ServiceActivity" />
-        <activity android:name=".ui.RegisterActivity" />
-        <activity android:name=".ui.LoginActivity" />
+        <activity android:name=".ui.activity.MainUserActivity"></activity>
+        <activity android:name=".ui.activity.AboutActivity" />
+        <activity android:name=".ui.activity.RegisterActivity" />
+        <activity android:name=".ui.activity.LoginActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".ui.SplashScreenActivity">
+        <activity android:name=".ui.activity.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

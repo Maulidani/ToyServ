@@ -1,10 +1,9 @@
-package com.toyota.toyserv.ui
+package com.toyota.toyserv.ui.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.animation.AnimationUtils
-import com.toyota.toyserv.MainActivity
 import com.toyota.toyserv.R
 import com.toyota.toyserv.databinding.ActivitySplashScreenBinding
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +25,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
         GlobalScope.launch(context = Dispatchers.Main) {
             delay(2000)
-            startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
+            startActivity(Intent(this@SplashScreenActivity, MainUserActivity::class.java))
             overridePendingTransition(R.anim.splashscreen_fade_in, R.anim.splashscreen_fade_out)
             finish()
         }
