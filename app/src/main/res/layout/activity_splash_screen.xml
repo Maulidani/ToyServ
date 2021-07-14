@@ -5,13 +5,13 @@
     android:id="@+id/parentSplashScreenn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@drawable/img_background"
     tools:context=".ui.activity.SplashScreenActivity">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
+        android:layout_marginHorizontal="50dp"
         android:contentDescription="@string/todo"
         android:src="@drawable/kalla_toyota"
         app:layout_constraintBottom_toBottomOf="parent"
