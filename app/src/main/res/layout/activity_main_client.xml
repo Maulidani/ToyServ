@@ -5,18 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/img_background"
-    tools:context=".ui.activity.MainUserActivity">
+    tools:context=".ui.activity.MainClientActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="18dp"
+            android:contentDescription="@string/todo"
+            android:src="@drawable/ic_menu"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
             android:id="@+id/imgLogo"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginHorizontal="120dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginHorizontal="100dp"
+            android:layout_marginTop="50dp"
             android:contentDescription="@string/todo"
             android:src="@drawable/kalla_toyota"
             app:layout_constraintTop_toTopOf="parent" />
@@ -60,15 +70,15 @@
             app:layout_constraintTop_toBottomOf="@id/tvNameProfile" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardServisBerat"
+            android:id="@+id/cardServisSaya"
             android:layout_width="0dp"
-            android:layout_height="170dp"
+            android:layout_height="200dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="32dp"
             android:backgroundTint="@color/background"
             app:cardCornerRadius="12dp"
-            app:layout_constraintLeft_toRightOf="@id/cardServisRingan"
+            app:layout_constraintLeft_toRightOf="@id/cardServis"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imgProfile">
 
@@ -77,12 +87,12 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/tvServisBerat"
+                    android:id="@+id/tvServisSaya"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="24dp"
                     android:gravity="center"
-                    android:text="Servis Berat"
+                    android:text="Servis Saya"
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -93,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/todo"
                     android:src="@mipmap/ic_launcher"
-                    app:layout_constraintBottom_toTopOf="@+id/tvServisBerat"
+                    app:layout_constraintBottom_toTopOf="@+id/tvServisSaya"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -101,16 +111,16 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardServisRingan"
+            android:id="@+id/cardServis"
             android:layout_width="0dp"
-            android:layout_height="170dp"
+            android:layout_height="200dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="12dp"
             android:backgroundTint="@color/background"
             app:cardCornerRadius="12dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/cardServisBerat"
+            app:layout_constraintRight_toLeftOf="@id/cardServisSaya"
             app:layout_constraintTop_toBottomOf="@id/imgProfile">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -118,12 +128,12 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/tvServisRingan"
+                    android:id="@+id/tvServis"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="24dp"
                     android:gravity="center"
-                    android:text="Servis Ringan"
+                    android:text="Servis"
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -134,89 +144,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/todo"
                     android:src="@mipmap/ic_launcher"
-                    app:layout_constraintBottom_toTopOf="@+id/tvServisRingan"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardTentang"
-            android:layout_width="0dp"
-            android:layout_height="170dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="32dp"
-            android:backgroundTint="@color/background"
-            app:cardCornerRadius="12dp"
-            app:layout_constraintLeft_toRightOf="@id/cardRiwayat"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardServisBerat">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/tvTentang"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:gravity="center"
-                    android:text="Tentang"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/todo"
-                    android:src="@mipmap/ic_launcher"
-                    app:layout_constraintBottom_toTopOf="@+id/tvTentang"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardRiwayat"
-            android:layout_width="0dp"
-            android:layout_height="170dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="12dp"
-            android:backgroundTint="@color/background"
-            app:cardCornerRadius="12dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/cardTentang"
-            app:layout_constraintTop_toBottomOf="@id/cardServisBerat">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/tvRiwayat"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:gravity="center"
-                    android:text="Riwayat"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/todo"
-                    android:src="@mipmap/ic_launcher"
-                    app:layout_constraintBottom_toTopOf="@+id/tvRiwayat"
+                    app:layout_constraintBottom_toTopOf="@+id/tvServis"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -251,11 +179,11 @@
                 android:id="@+id/tvKeterangan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Servis Ringan"
                 android:textColor="@color/black"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvLine" />
+                app:layout_constraintTop_toBottomOf="@+id/tvLine"
+                tools:text="Servis" />
 
             <FrameLayout
                 android:id="@+id/frame"

@@ -25,25 +25,16 @@ class MainCSActivity : AppCompatActivity() {
             this.state = BottomSheetBehavior.STATE_DRAGGING
         }
 
-        binding.cardSemuaServis.setOnClickListener {
+        binding.cardPermintaanServis.setOnClickListener {
             binding.sheet.visibility = View.VISIBLE
-            binding.tvKeterangan.text = "Semua Servis"
-            loadFragment(SemuaServisFragment())
+            binding.tvKeterangan.text = "Permintaan Servis"
+            loadFragment(PermintaanServisFragment())
         }
+
         binding.cardServisSaya.setOnClickListener {
             binding.sheet.visibility = View.VISIBLE
             binding.tvKeterangan.text = "Servis Saya"
-            loadFragment(ServisSayaFragment())
-        }
-        binding.cardDaftarKendaraan.setOnClickListener {
-            binding.sheet.visibility = View.VISIBLE
-            binding.tvKeterangan.text = "Daftar Kendaraan"
-            loadFragment(PermintaanServisFragment())
-        }
-        binding.cardTentang.setOnClickListener {
-            binding.sheet.visibility = View.VISIBLE
-            binding.tvKeterangan.text = "Tentang"
-            loadFragment(TentangFragment())
+            loadFragment(ServisSayaCSFragment())
         }
     }
 

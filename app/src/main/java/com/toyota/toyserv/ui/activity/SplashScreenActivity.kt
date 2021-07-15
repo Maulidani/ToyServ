@@ -25,7 +25,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
         GlobalScope.launch(context = Dispatchers.Main) {
             delay(2000)
-            startActivity(Intent(this@SplashScreenActivity, MainUserActivity::class.java))
+            startActivity(Intent(this@SplashScreenActivity, MainCSActivity::class.java))
             overridePendingTransition(R.anim.splashscreen_fade_in, R.anim.splashscreen_fade_out)
             finish()
         }

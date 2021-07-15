@@ -7,10 +7,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.toyota.toyserv.R
 import com.toyota.toyserv.databinding.ActivityMainClientBinding
-import com.toyota.toyserv.ui.fragment.RiwayatFragment
-import com.toyota.toyserv.ui.fragment.ServiceBeratFragment
-import com.toyota.toyserv.ui.fragment.ServiceRinganFragment
-import com.toyota.toyserv.ui.fragment.TentangFragment
+import com.toyota.toyserv.ui.fragment.*
 
 class MainClientActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainClientBinding
@@ -28,25 +25,15 @@ class MainClientActivity : AppCompatActivity() {
             this.state = BottomSheetBehavior.STATE_DRAGGING
         }
 
-        binding.cardServisRingan.setOnClickListener {
+        binding.cardServis.setOnClickListener {
             binding.sheet.visibility = View.VISIBLE
-            binding.tvKeterangan.text = "Servis Ringan"
-            loadFragment(ServiceRinganFragment())
+            binding.tvKeterangan.text = "Servis"
+            loadFragment(ServisFragment())
         }
-        binding.cardServisBerat.setOnClickListener {
+        binding.cardServisSaya.setOnClickListener {
             binding.sheet.visibility = View.VISIBLE
-            binding.tvKeterangan.text = "Servis Berat"
-            loadFragment(ServiceBeratFragment())
-        }
-        binding.cardRiwayat.setOnClickListener {
-            binding.sheet.visibility = View.VISIBLE
-            binding.tvKeterangan.text = "Riwayat"
-            loadFragment(RiwayatFragment())
-        }
-        binding.cardTentang.setOnClickListener {
-            binding.sheet.visibility = View.VISIBLE
-            binding.tvKeterangan.text = "Tentang"
-            loadFragment(TentangFragment())
+            binding.tvKeterangan.text = "Servis Saya"
+            loadFragment(ServisSayaFragment())
         }
     }
 
