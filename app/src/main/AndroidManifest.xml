@@ -14,9 +14,6 @@
         android:theme="@style/Theme.ToyServ"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".ui.activity.MainAdminActivity"></activity>
-        <activity android:name=".ui.activity.MainCSActivity" />
-        <activity android:name=".ui.activity.MainClientActivity" />
         <activity android:name=".ui.activity.AboutActivity" />
         <activity android:name=".ui.activity.RegisterActivity" />
         <activity android:name=".ui.activity.LoginActivity" />
