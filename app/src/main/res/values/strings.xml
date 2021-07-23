@@ -14,4 +14,10 @@
     <string name="title_activity_tab">TabActivity</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="kata_sandi">Kata sandi</string>
+    <string name="nomor_telepon">Nomor telepon</string>
+    <string name="nomor_polisi">Nomor polisi</string>
+    <string name="merek_mobil">Merek mobil</string>
+    <string name="nama_lengkap">Nama lengkap</string>
+    <string name="sudah_punya_akun">Sudah punya akun ? Masuk disini !</string>
 </resources>

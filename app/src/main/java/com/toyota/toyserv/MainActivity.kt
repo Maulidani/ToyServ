@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        supportActionBar?.hide()
 
         binding.sheet.visibility = View.INVISIBLE
         BottomSheetBehavior.from(binding.sheet).apply {
@@ -26,8 +27,8 @@ class MainActivity : AppCompatActivity() {
 
 
         //test condition
-        val customer = true
-        val customerservice = false
+        val customer = false
+        val customerservice = true
         val admin = false
 
         when {

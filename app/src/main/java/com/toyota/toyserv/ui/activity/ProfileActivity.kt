@@ -2,17 +2,17 @@ package com.toyota.toyserv.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.toyota.toyserv.databinding.ActivityLoginBinding
+import com.toyota.toyserv.databinding.ActivityProfileBinding
 
-class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
+class ProfileActivity : AppCompatActivity() {
+    lateinit var binding: ActivityProfileBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityProfileBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        supportActionBar?.hide()
+
 
     }
 }
