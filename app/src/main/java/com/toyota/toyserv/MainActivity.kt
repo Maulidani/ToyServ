@@ -27,8 +27,8 @@ class MainActivity : AppCompatActivity() {
 
 
         //test condition
-        val customer = false
-        val customerservice = true
+        val customer = true
+        val customerservice = false
         val admin = false
 
         when {
