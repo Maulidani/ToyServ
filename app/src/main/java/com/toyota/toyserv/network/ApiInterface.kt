@@ -11,7 +11,7 @@ interface ApiInterface {
 
     @FormUrlEncoded
     @POST("service_request.php")
-    fun requestService(
+    fun requestServicePost(
         @Field("id") id: String,
 
         @Field("name") name: String,
@@ -26,12 +26,14 @@ interface ApiInterface {
     ): Call<DataResponse>
 
     @GET("service_request.php")
-    fun requestService(
+    fun requestServiceGet(
         @Query("type") type: String
     ): Call<DataResponse>
 
     @GET("service.php")
-    fun service(): Call<DataResponse>
+    fun service(
+        @Query("type") type: String
+    ): Call<DataResponse>
 
 
 }
