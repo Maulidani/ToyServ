@@ -2,10 +2,26 @@ package com.toyota.toyserv.model
 
 data class DataResponse(
     val value: String,
+    val message: String,
     val result: ArrayList<DataResult>
 )
 
 data class DataResult(
     val id: String,
-    val name: String
+    val name: String,
+    val service_name: String,
+    val user_name: String,
+    val cs_name: String,
+    val vehicle: String,
+    val description: String,
+    val user: String,
+    val created_at: String,
+    val note: String,
+    val cs: String,
+    val service_at: String,
+    val finish_at: String,
+    val next_at: String,
+    val type_service: String,
+    val type: String
+
 )

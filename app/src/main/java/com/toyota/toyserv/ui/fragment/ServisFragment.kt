@@ -41,7 +41,7 @@ class ServisFragment : Fragment(), VehicleOperationAdapter.callback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        init(servis)
+        init(servis,"")
     }
 
     private fun getVehicleOperation() {
@@ -57,18 +57,18 @@ class ServisFragment : Fragment(), VehicleOperationAdapter.callback {
                     adapter.notifyDataSetChanged()
 
                 } else {
-                    Toast.makeText(requireActivity(), "bukan 1", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity(), "not Succes", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<DataResponse>, t: Throwable) {
-                Toast.makeText(requireActivity(), "gagal", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity(), "Failure", Toast.LENGTH_SHORT).show()
             }
 
         })
     }
 
-    private fun init(servis: Boolean) {
+    private fun init(servis: Boolean, id: String) {
 
         if (!servis) {
 
@@ -80,13 +80,15 @@ class ServisFragment : Fragment(), VehicleOperationAdapter.callback {
             getVehicleOperation()
         } else {
 
+            binding.parentRv.visibility = View.INVISIBLE
             binding.parentTabViewPager.visibility = View.VISIBLE
             val item = "servis"
             val totalItem = 2
+            val idVehicleOperation = id
 
             val viewPagerAdapter = ViewPagerAdapter(
                 requireActivity().supportFragmentManager,
-                lifecycle, item, totalItem
+                lifecycle, item, totalItem, idVehicleOperation
             )
 
             binding.viewPager.adapter = viewPagerAdapter
@@ -101,9 +103,9 @@ class ServisFragment : Fragment(), VehicleOperationAdapter.callback {
 
     }
 
-    override fun refreshView(servis: Boolean) {
+    override fun refreshView(servis: Boolean, id: String) {
         this.servis = servis
-        init(this.servis)
+        init(this.servis,id)
     }
 
     override fun onResume() {

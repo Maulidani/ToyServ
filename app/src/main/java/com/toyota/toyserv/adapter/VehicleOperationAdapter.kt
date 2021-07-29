@@ -21,7 +21,7 @@ class VehicleOperationAdapter(
 
             binding.card.setOnClickListener {
                 Toast.makeText(it.context, dataList.id, Toast.LENGTH_SHORT).show()
-                mListener.refreshView(true)
+                mListener.refreshView(true,dataList.id)
             }
         }
     }
@@ -39,7 +39,7 @@ class VehicleOperationAdapter(
     override fun getItemCount(): Int = vehicleOperationList.size
 
     interface callback {
-        fun refreshView(servis: Boolean)
+        fun refreshView(servis: Boolean, id: String)
     }
 
 }

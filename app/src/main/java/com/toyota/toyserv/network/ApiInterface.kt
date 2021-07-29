@@ -32,7 +32,8 @@ interface ApiInterface {
 
     @GET("service.php")
     fun service(
-        @Query("type") type: String
+        @Query("type") type: String,
+        @Query("vehicle_operation") vehicleOperation: String
     ): Call<DataResponse>
 
 

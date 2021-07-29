@@ -1,29 +1,28 @@
 package com.toyota.toyserv.ui.fragment
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.test.belajarviewbinding.ApiClient
-import com.toyota.toyserv.adapter.ServisAdapter
-import com.toyota.toyserv.databinding.FragmentServis2Binding
+import com.toyota.toyserv.adapter.ServisBelumDijadwalkanAdapter
+import com.toyota.toyserv.databinding.FragmentServisSaya2Binding
 import com.toyota.toyserv.model.DataResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment() {
+class ServisSaya2Fragment(_type: String) : Fragment() {
     private val type = _type
-    private val idVehicleOperation = _idVehicleOperation
 
-    private var _binding: FragmentServis2Binding? = null
+    private var _binding: FragmentServisSaya2Binding? = null
     private val binding get() = _binding!!
 
     private lateinit var layoutManager: LinearLayoutManager
-    private lateinit var adapter: ServisAdapter
+    private lateinit var adapter: ServisBelumDijadwalkanAdapter
 
     override fun onDestroy() {
         super.onDestroy()
@@ -33,8 +32,8 @@ class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentServis2Binding.inflate(inflater, container, false)
+    ): View? {
+        _binding = FragmentServisSaya2Binding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -44,11 +43,11 @@ class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment() {
         layoutManager = LinearLayoutManager(requireActivity())
         binding.rv.layoutManager = layoutManager
 
-        servis(type, idVehicleOperation)
+        servis(type)
     }
 
-    private fun servis(type: String, idVehicleOperation: String) {
-        ApiClient.instances.service(type, idVehicleOperation)
+    private fun servis(type: String) {
+        ApiClient.instances.requestServiceGet(type)
             .enqueue(object : Callback<DataResponse> {
                 override fun onResponse(
                     call: Call<DataResponse>,
@@ -59,7 +58,11 @@ class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment() {
 
                     if (response.isSuccessful && value == "1") {
                         Toast.makeText(requireActivity(), "sukses", Toast.LENGTH_SHORT).show()
-                        adapter = ServisAdapter(result!!)
+
+//                        when(type){
+//
+//                        }
+                        adapter = ServisBelumDijadwalkanAdapter(result!!)
                         binding.rv.adapter = adapter
                         adapter.notifyDataSetChanged()
 
@@ -78,5 +81,4 @@ class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment() {
                 }
             })
     }
-
 }
