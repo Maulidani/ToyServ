@@ -17,21 +17,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:paddingHorizontal="32dp">
+            android:paddingHorizontal="24dp">
 
             <TextView
                 android:id="@+id/tvServiceName"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="18dp"
-                android:layout_marginStart="24dp"
-                android:gravity="center"
                 android:textColor="@color/black"
-                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/icDetails"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Ganti oli" />
+                tools:text="Ganti oli Ganti oliGanti oliGanti oliGanti oliGanti oliGanti oliGanti oliGanti oliGanti oli" />
 
             <ImageView
                 android:id="@+id/icDetails"
@@ -43,6 +41,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/parentDetails"
@@ -61,21 +60,38 @@
                 tools:text="Servis Ringan" />
 
             <TextView
-                android:id="@+id/tvKmInfo"
+                android:id="@+id/tvVechileInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="Kilometer terakhir : "
+                android:text="Nama kendaraan : "
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvServiceType" />
 
             <TextView
-                android:id="@+id/tvKm"
+                android:id="@+id/tvVechile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintLeft_toRightOf="@+id/tvKmInfo"
-                app:layout_constraintTop_toTopOf="@id/tvKmInfo"
-                tools:text="12.000 km" />
+                app:layout_constraintLeft_toRightOf="@+id/tvVechileInfo"
+                app:layout_constraintTop_toTopOf="@id/tvVechileInfo"
+                tools:text="Avanza" />
+
+            <TextView
+                android:id="@+id/tvPemilikinfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Pemilik : "
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvVechileInfo" />
+
+            <TextView
+                android:id="@+id/tvPemilik"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@+id/tvPemilikinfo"
+                app:layout_constraintTop_toTopOf="@id/tvPemilikinfo"
+                tools:text="Khofifah" />
 
             <TextView
                 android:id="@+id/tvServicedAtInfo"
@@ -84,7 +100,7 @@
                 android:layout_marginTop="6dp"
                 android:text="Telah diservis : "
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvKmInfo" />
+                app:layout_constraintTop_toBottomOf="@id/tvPemilikinfo" />
 
             <TextView
                 android:id="@+id/tvServicedAt"

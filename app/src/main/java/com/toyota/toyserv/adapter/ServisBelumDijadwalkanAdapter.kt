@@ -20,7 +20,6 @@ class ServisBelumDijadwalkanAdapter(
             val userType = "customer"
             if (userType != "customer") {
                 when (dataList.type) {
-                    "sudah_dijadwalkan" -> binding.btnSelesai.visibility = View.VISIBLE
                     "belum_dijadwalkan" -> binding.btnJadwalkan.visibility = View.VISIBLE
                 }
             }
