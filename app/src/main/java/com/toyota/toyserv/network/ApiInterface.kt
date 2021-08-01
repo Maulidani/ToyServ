@@ -27,7 +27,8 @@ interface ApiInterface {
 
     @GET("service_request.php")
     fun requestServiceGet(
-        @Query("type") type: String
+        @Query("type") type: String,
+        @Query("user") user: String
     ): Call<DataResponse>
 
     @GET("service.php")

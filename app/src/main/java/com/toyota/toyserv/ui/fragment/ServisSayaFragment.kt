@@ -29,22 +29,40 @@ class ServisSayaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val item = "servis saya"
-        val totalItem = 3
-//        val idVehicleOperation = id
 
-        val viewPagerAdapter = ViewPagerAdapter(
-            requireActivity().supportFragmentManager,
-            lifecycle, item, totalItem, ""
-        )
+        val userType = "customer"
 
-        binding.viewPager.adapter = viewPagerAdapter
+        if (userType == "customer") {
+            val totalItem = 3
+            val viewPagerAdapter = ViewPagerAdapter(
+                requireActivity().supportFragmentManager,
+                lifecycle, item, totalItem, ""
+            )
+            binding.viewPager.adapter = viewPagerAdapter
 
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            when (position) {
-                0 -> tab.text = "Belum Dijadwalkan"
-                1 -> tab.text = "Sudah Dijadwalkan"
-                2 -> tab.text = "Selesai"
-            }
-        }.attach()
+            TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+                when (position) {
+                    0 -> tab.text = "Belum Dijadwalkan"
+                    1 -> tab.text = "Sudah Dijadwalkan"
+                    2 -> tab.text = "Selesai"
+                }
+            }.attach()
+
+        } else if (userType == "customer_service") {
+
+            val totalItem = 2
+            val viewPagerAdapter = ViewPagerAdapter(
+                requireActivity().supportFragmentManager,
+                lifecycle, item, totalItem, ""
+            )
+            binding.viewPager.adapter = viewPagerAdapter
+
+            TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+                when (position) {
+                    0 -> tab.text = "Dijadwalkan"
+                    1 -> tab.text = "Selesai"
+                }
+            }.attach()
+        }
     }
 }

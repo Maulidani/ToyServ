@@ -17,11 +17,10 @@ class ServisBelumDijadwalkanAdapter(
 
         fun bind(dataList: DataResult) {
 
-            val userType = "customer"
-            if (userType != "customer") {
-                when (dataList.type) {
-                    "belum_dijadwalkan" -> binding.btnJadwalkan.visibility = View.VISIBLE
-                }
+            val userType = "customer_service"
+            if (userType == "customer_service") {
+                binding.btnJadwalkan.visibility = View.VISIBLE
+
             }
             binding.tvServiceName.text = dataList.service_name
             binding.tvServiceType.text = dataList.type_service

@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.toyota.toyserv.databinding.ActivityMainBinding
+import com.toyota.toyserv.ui.fragment.PermintaanServisFragment
 import com.toyota.toyserv.ui.fragment.ServisFragment
 import com.toyota.toyserv.ui.fragment.ServisSayaFragment
 
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                 customerService()
             }
             admin -> {
-                admin()
+//                admin()
             }
         }
     }
@@ -72,7 +73,7 @@ class MainActivity : AppCompatActivity() {
         binding.cardOne.setOnClickListener {
             binding.sheet.visibility = View.VISIBLE
             binding.tvInfo.text = "Permintaan Servis"
-            loadFragment(ServisFragment())
+            loadFragment(PermintaanServisFragment())
         }
 
         binding.tvCardTwo.text = "Servis Saya"
@@ -83,19 +84,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun admin() {
-        binding.tvCardOne.text = "Permintaan Servis"
-        binding.cardOne.setOnClickListener {
-            binding.sheet.visibility = View.VISIBLE
-            binding.tvInfo.text = "Permintaan Servis"
-            loadFragment(ServisFragment())
-        }
-
-        binding.tvCardTwo.text = "Akun"
-        binding.cardTwo.setOnClickListener {
-            binding.sheet.visibility = View.VISIBLE
-            binding.tvInfo.text = "Akun"
-            loadFragment(ServisSayaFragment())
-        }
-    }
+//    private fun admin() {
+//        binding.tvCardOne.text = "Permintaan Servis"
+//        binding.cardOne.setOnClickListener {
+//            binding.sheet.visibility = View.VISIBLE
+//            binding.tvInfo.text = "Permintaan Servis"
+//            loadFragment(ServisFragment())
+//        }
+//
+//        binding.tvCardTwo.text = "Akun"
+//        binding.cardTwo.setOnClickListener {
+//            binding.sheet.visibility = View.VISIBLE
+//            binding.tvInfo.text = "Akun"
+//            loadFragment(ServisSayaFragment())
+//        }
+//    }
 }

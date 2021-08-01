@@ -27,19 +27,29 @@ class ViewPagerAdapter(
         if (item == "servis") {
             return when (position) {
                 0 -> Servis2Fragment("ringan", idVehicleOperation)
-                1 -> Servis2Fragment("berat",idVehicleOperation)
+                1 -> Servis2Fragment("berat", idVehicleOperation)
                 else -> Fragment()
             }
-        }
-        else if (item == "servis saya") {
+        } else if (item == "servis saya" && total == 3) {
             return when (position) {
-                0 -> ServisSaya2Fragment("belum_dijadwalkan")
-                1 -> ServisSaya2Fragment("sudah_dijadwalkan")
-                2 -> ServisSaya2Fragment("selesai")
+                0 -> ServisSaya2Fragment("belum_dijadwalkan","")
+                1 -> ServisSaya2Fragment("sudah_dijadwalkan","")
+                2 -> ServisSaya2Fragment("selesai","")
                 else -> Fragment()
             }
-        } else if (item == "Info") {
-
+        } else if (item == "servis saya" && total == 2) {
+            return when (position) {
+                0 -> ServisSaya2Fragment("dijadwalkan_cs","")
+                1 -> ServisSaya2Fragment("selesai_cs","")
+                else -> Fragment()
+            }
+        } else if (item == "permintaan_servis"){
+            return when (position) {
+                0 -> ServisSaya2Fragment("belum_dijadwalkan","all")
+                1 -> ServisSaya2Fragment("sudah_dijadwalkan","all")
+                2 -> ServisSaya2Fragment("selesai","all")
+                else -> Fragment()
+            }
         }
         return Fragment()
     }

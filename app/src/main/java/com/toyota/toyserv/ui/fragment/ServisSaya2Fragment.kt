@@ -17,8 +17,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ServisSaya2Fragment(_type: String) : Fragment() {
+class ServisSaya2Fragment(_type: String, _all: String) : Fragment() {
     private val type = _type
+    private val all = _all
 
     private var _binding: FragmentServisSaya2Binding? = null
     private val binding get() = _binding!!
@@ -47,11 +48,17 @@ class ServisSaya2Fragment(_type: String) : Fragment() {
         layoutManager = LinearLayoutManager(requireActivity())
         binding.rv.layoutManager = layoutManager
 
-        servis(type)
+        val userLogin = "2"
+
+        if (all=="all"){
+            servisSemua(type)
+        } else {
+            servis(type, userLogin)
+        }
     }
 
-    private fun servis(type: String) {
-        ApiClient.instances.requestServiceGet(type)
+    private fun servis(type: String, userLogin: String) {
+        ApiClient.instances.requestServiceGet(type, userLogin)
             .enqueue(object : Callback<DataResponse> {
                 override fun onResponse(
                     call: Call<DataResponse>,
@@ -72,7 +79,7 @@ class ServisSaya2Fragment(_type: String) : Fragment() {
 
                             }
                             "sudah_dijadwalkan" -> {
-                                adapter2 = ServisSudahDijadwalkanAdapter(result!!)
+                                adapter2 = ServisSudahDijadwalkanAdapter(result!!, "user")
                                 binding.rv.adapter = adapter2
                                 adapter2.notifyDataSetChanged()
 
@@ -81,8 +88,69 @@ class ServisSaya2Fragment(_type: String) : Fragment() {
                                 adapter3 = ServisSelesaiAdapter(result!!)
                                 binding.rv.adapter = adapter3
                                 adapter3.notifyDataSetChanged()
+                            }
+
+                            "dijadwalkan_cs" -> {
+                                adapter2 = ServisSudahDijadwalkanAdapter(result!!, "user")
+                                binding.rv.adapter = adapter2
+                                adapter2.notifyDataSetChanged()
+                            }
+                            "selesai_cs" -> {
+                                adapter3 = ServisSelesaiAdapter(result!!)
+                                binding.rv.adapter = adapter3
+                                adapter3.notifyDataSetChanged()
+                            }
+                        }
+
+                        if (result.isNullOrEmpty()) {
+                            Toast.makeText(requireActivity(), "Data Kosong", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+
+                    } else {
+                        Toast.makeText(requireActivity(), "not Succes", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<DataResponse>, t: Throwable) {
+                    Toast.makeText(requireActivity(), "Failure", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+    private fun servisSemua(type: String) {
+        ApiClient.instances.requestServiceGet(type,"")
+            .enqueue(object : Callback<DataResponse> {
+                override fun onResponse(
+                    call: Call<DataResponse>,
+                    response: Response<DataResponse>
+                ) {
+                    val value = response.body()?.value
+                    val result = response.body()?.result
+
+                    if (response.isSuccessful && value == "1") {
+                        Toast.makeText(requireActivity(), "sukses", Toast.LENGTH_SHORT).show()
+
+                        when (type) {
+
+                            "belum_dijadwalkan" -> {
+                                adapter = ServisBelumDijadwalkanAdapter(result!!)
+                                binding.rv.adapter = adapter
+                                adapter.notifyDataSetChanged()
 
                             }
+                            "sudah_dijadwalkan" -> {
+                                adapter2 = ServisSudahDijadwalkanAdapter(result!!,"all")
+                                binding.rv.adapter = adapter2
+                                adapter2.notifyDataSetChanged()
+
+                            }
+                            "selesai" -> {
+                                adapter3 = ServisSelesaiAdapter(result!!)
+                                binding.rv.adapter = adapter3
+                                adapter3.notifyDataSetChanged()
+                            }
+
                         }
 
                         if (result.isNullOrEmpty()) {

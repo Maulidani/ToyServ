@@ -8,19 +8,28 @@ import com.toyota.toyserv.databinding.ItemSudahDijadwalkanServisBinding
 import com.toyota.toyserv.model.DataResult
 
 class ServisSudahDijadwalkanAdapter(
-    private val sudahDijadwalkanList: ArrayList<DataResult>
+    private val sudahDijadwalkanList: ArrayList<DataResult>,
+    _all: String
 ) :
     RecyclerView.Adapter<ServisSudahDijadwalkanAdapter.ListViewHolder>() {
+
+    val all = _all
 
     inner class ListViewHolder(private val binding: ItemSudahDijadwalkanServisBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(dataList: DataResult) {
 
-            val userType = "customer"
+            val userType = "customer_service"
             if (userType == "customer_service") {
-                binding.btnSelesai.visibility = View.VISIBLE
+                if (all == "user") {
+                    //
+                } else if (all == "all") {
+                    binding.btnSelesai.visibility = View.VISIBLE
+
+                }
             }
+
             binding.tvServiceName.text = dataList.service_name
             binding.tvServiceType.text = dataList.type_service
             binding.tvVechile.text = dataList.vehicle
