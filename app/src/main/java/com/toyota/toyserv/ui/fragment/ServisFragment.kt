@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayoutMediator
-import com.test.belajarviewbinding.ApiClient
+import com.toyota.toyserv.network.ApiClient
 import com.toyota.toyserv.adapter.VehicleOperationAdapter
 import com.toyota.toyserv.adapter.ViewPagerAdapter
 import com.toyota.toyserv.databinding.FragmentServisBinding

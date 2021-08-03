@@ -3,6 +3,8 @@ package com.toyota.toyserv.model
 data class DataResponse(
     val value: String,
     val message: String,
+    val type: String,
+    val id: String,
     val result: ArrayList<DataResult>
 )
 

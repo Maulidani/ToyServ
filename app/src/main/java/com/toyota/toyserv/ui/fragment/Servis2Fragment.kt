@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.test.belajarviewbinding.ApiClient
+import com.toyota.toyserv.network.ApiClient
 import com.toyota.toyserv.adapter.ServisAdapter
 import com.toyota.toyserv.databinding.FragmentServis2Binding
 import com.toyota.toyserv.model.DataResponse

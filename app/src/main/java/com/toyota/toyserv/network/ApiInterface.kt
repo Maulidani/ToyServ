@@ -6,6 +6,14 @@ import retrofit2.http.*
 
 interface ApiInterface {
 
+    @FormUrlEncoded
+    @POST("login.php")
+    fun login(
+        @Field("type") type: String,
+        @Field("username") username: String,
+        @Field("password") password: String
+    ): Call<DataResponse>
+
     @GET("vehicle_operation.php")
     fun vehicleOperation(): Call<DataResponse>
 

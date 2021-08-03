@@ -9,31 +9,38 @@ import apotekku.projectapotekku.utils.Constant
 import apotekku.projectapotekku.utils.PreferencesHelper
 import com.toyota.toyserv.MainActivity
 import com.toyota.toyserv.R
-import com.toyota.toyserv.databinding.ActivityLoginBinding
+import com.toyota.toyserv.databinding.ActivityLoginCsAdminBinding
 import com.toyota.toyserv.model.DataResponse
 import com.toyota.toyserv.network.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginActivity : AppCompatActivity() {
+class LoginCsAdminActivity : AppCompatActivity() {
     private lateinit var sharedPref: PreferencesHelper
-    private lateinit var binding: ActivityLoginBinding
+    private lateinit var binding: ActivityLoginCsAdminBinding
+    private val typeLogin = listOf("customer_service", "admin")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityLoginCsAdminBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
         supportActionBar?.hide()
         sharedPref = PreferencesHelper(this)
 
+        val adapterLogin = ArrayAdapter(this, R.layout.list_dropdown, typeLogin)
+        binding.inputLoginAs.setAdapter(adapterLogin)
+
         binding.btnLogin.setOnClickListener {
+            val type = binding.inputLoginAs.text.toString()
             val username = binding.inputUsername.text.toString()
             val password = binding.inputPassword.text.toString()
-            val type = "customer"
 
             when {
+                type.isEmpty() -> {
+                    binding.inputLoginAs.error = "pilih login sebagai"
+                }
                 username.isEmpty() -> {
                     binding.inputUsername.error = "masukkan username"
                 }
@@ -44,10 +51,6 @@ class LoginActivity : AppCompatActivity() {
                     login(type, username, password)
                 }
             }
-        }
-
-        binding.tvLoginCsAdmin.setOnClickListener {
-            startActivity(Intent(this, LoginCsAdminActivity::class.java))
         }
     }
 
@@ -66,10 +69,10 @@ class LoginActivity : AppCompatActivity() {
                         val type = response.body()?.type
                         val id = response.body()?.type
                         saveSession(id, type)
-                        Toast.makeText(this@LoginActivity, message, Toast.LENGTH_SHORT)
+                        Toast.makeText(this@LoginCsAdminActivity, message, Toast.LENGTH_SHORT)
                             .show()
                     } else {
-                        Toast.makeText(this@LoginActivity, message, Toast.LENGTH_SHORT)
+                        Toast.makeText(this@LoginCsAdminActivity, message, Toast.LENGTH_SHORT)
                             .show()
                     }
 
@@ -77,7 +80,7 @@ class LoginActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<DataResponse>, t: Throwable) {
                     Toast.makeText(
-                        this@LoginActivity,
+                        this@LoginCsAdminActivity,
                         t.message.toString(),
                         Toast.LENGTH_SHORT
                     ).show()
