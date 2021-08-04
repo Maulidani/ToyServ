@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import apotekku.projectapotekku.utils.Constant
+import apotekku.projectapotekku.utils.PreferencesHelper
 import com.toyota.toyserv.network.ApiClient
 import com.toyota.toyserv.adapter.ServisBelumDijadwalkanAdapter
 import com.toyota.toyserv.adapter.ServisSelesaiAdapter
@@ -29,6 +31,8 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment() {
     private lateinit var adapter2: ServisSudahDijadwalkanAdapter
     private lateinit var adapter3: ServisSelesaiAdapter
 
+    private lateinit var sharedPref: PreferencesHelper
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
@@ -44,21 +48,22 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedPref = PreferencesHelper(requireActivity())
 
         layoutManager = LinearLayoutManager(requireActivity())
         binding.rv.layoutManager = layoutManager
 
-        val userLogin = "3"
+        val idAkun = sharedPref.getString(Constant.PREF_IS_LOGIN_ID)
 
-        if (all=="all"){
+        if (all == "all") {
             servisSemua(type)
         } else {
-            servis(type, userLogin)
+            servis(type, idAkun!!)
         }
     }
 
-    private fun servis(type: String, userLogin: String) {
-        ApiClient.instances.requestServiceGet(type, userLogin)
+    private fun servis(type: String, idAkun: String) {
+        ApiClient.instances.requestServiceGet(type, idAkun)
             .enqueue(object : Callback<DataResponse> {
                 override fun onResponse(
                     call: Call<DataResponse>,
@@ -79,7 +84,7 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment() {
 
                             }
                             "sudah_dijadwalkan" -> {
-                                adapter2 = ServisSudahDijadwalkanAdapter(result!!)
+                                adapter2 = ServisSudahDijadwalkanAdapter(result!!,"all")
                                 binding.rv.adapter = adapter2
                                 adapter2.notifyDataSetChanged()
                             }
@@ -89,7 +94,7 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment() {
                                 adapter3.notifyDataSetChanged()
                             }
                             "dijadwalkan_cs" -> {
-                                adapter2 = ServisSudahDijadwalkanAdapter(result!!)
+                                adapter2 = ServisSudahDijadwalkanAdapter(result!!,"")
                                 binding.rv.adapter = adapter2
                                 adapter2.notifyDataSetChanged()
                             }
@@ -117,7 +122,7 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment() {
     }
 
     private fun servisSemua(type: String) {
-        ApiClient.instances.requestServiceGet(type,"")
+        ApiClient.instances.requestServiceGet(type, "")
             .enqueue(object : Callback<DataResponse> {
                 override fun onResponse(
                     call: Call<DataResponse>,
@@ -138,7 +143,7 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment() {
 
                             }
                             "sudah_dijadwalkan" -> {
-                                adapter2 = ServisSudahDijadwalkanAdapter(result!!)
+                                adapter2 = ServisSudahDijadwalkanAdapter(result!!,"all")
                                 binding.rv.adapter = adapter2
                                 adapter2.notifyDataSetChanged()
 

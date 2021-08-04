@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import apotekku.projectapotekku.utils.Constant
+import apotekku.projectapotekku.utils.PreferencesHelper
 import com.toyota.toyserv.databinding.ItemSudahDijadwalkanServisBinding
 import com.toyota.toyserv.model.DataResponse
 import com.toyota.toyserv.model.DataResult
@@ -15,22 +17,30 @@ import retrofit2.Response
 
 class ServisSudahDijadwalkanAdapter(
     private val sudahDijadwalkanList: ArrayList<DataResult>,
-//    _all: String
+    _all: String
 ) :
     RecyclerView.Adapter<ServisSudahDijadwalkanAdapter.ListViewHolder>() {
 
-//    val all = _all
+    val all = _all
+    private lateinit var sharedPref: PreferencesHelper
 
     inner class ListViewHolder(private val binding: ItemSudahDijadwalkanServisBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(dataList: DataResult) {
+            sharedPref = PreferencesHelper(itemView.context)
 
-            val userType = "customer_service"
+            val idService = dataList.id
+
+            val userType = sharedPref.getString(Constant.PREF_IS_LOGIN_TYPE)
+
             if (userType == "customer_service") {
-                binding.btnSelesai.visibility = View.VISIBLE
-                binding.btnSelesai.setOnClickListener {
-                    selesaikan(it, "14", "finishAt", "nextAt")
+                if (all != "all") {
+                    binding.btnSelesai.visibility = View.VISIBLE
+
+                    binding.btnSelesai.setOnClickListener {
+                        selesaikan(it, idService, "finishAt", "nextAt")
+                    }
                 }
             }
 

@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import apotekku.projectapotekku.utils.Constant
+import apotekku.projectapotekku.utils.PreferencesHelper
 import com.toyota.toyserv.databinding.ItemBelumDijadwalkanServisBinding
 import com.toyota.toyserv.model.DataResponse
 import com.toyota.toyserv.model.DataResult
@@ -14,25 +16,33 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ServisBelumDijadwalkanAdapter(
-    private val belumDijadwalkanList: ArrayList<DataResult>
+    private val belumDijadwalkanList: ArrayList<DataResult>,
+//    _all: String
 ) :
     RecyclerView.Adapter<ServisBelumDijadwalkanAdapter.ListViewHolder>() {
+//    val all = _all
+    private lateinit var sharedPref: PreferencesHelper
 
     inner class ListViewHolder(private val binding: ItemBelumDijadwalkanServisBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(dataList: DataResult) {
+            sharedPref = PreferencesHelper(itemView.context)
 
-            val idService = "14"
-            val cs = "3"
+            val idService = dataList.id
+
+            val userType = sharedPref.getString(Constant.PREF_IS_LOGIN_TYPE)
+            val idCs = sharedPref.getString(Constant.PREF_IS_LOGIN_ID)
+
             val serviceAt = "2066"
-            val userType = "customer_service"
-            if (userType == "customer_service") {
-                binding.btnJadwalkan.visibility = View.VISIBLE
-                binding.btnJadwalkan.setOnClickListener {
-                    jadwalkan(it, idService, cs, serviceAt)
-                }
 
+            if (userType == "customer_service") {
+//                if (all != "all") {
+                    binding.btnJadwalkan.visibility = View.VISIBLE
+                    binding.btnJadwalkan.setOnClickListener {
+                        jadwalkan(it, idService, idCs!!, serviceAt)
+                    }
+//                }
             }
             binding.tvServiceName.text = dataList.service_name
             binding.tvServiceType.text = dataList.type_service

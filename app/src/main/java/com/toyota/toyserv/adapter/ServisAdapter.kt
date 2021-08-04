@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import apotekku.projectapotekku.utils.Constant
+import apotekku.projectapotekku.utils.PreferencesHelper
 import com.toyota.toyserv.network.ApiClient
 import com.toyota.toyserv.databinding.ItemServiceBinding
 import com.toyota.toyserv.model.DataResponse
@@ -17,17 +19,20 @@ class ServisAdapter(
     private val servisList: ArrayList<DataResult>
 ) :
     RecyclerView.Adapter<ServisAdapter.ListViewHolder>() {
+    private lateinit var sharedPref: PreferencesHelper
 
     inner class ListViewHolder(private val binding: ItemServiceBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(dataList: DataResult) {
+            sharedPref = PreferencesHelper(itemView.context)
+            val idUser = sharedPref.getString(Constant.PREF_IS_LOGIN_ID)
 
             binding.tvServiceName.text = dataList.name
             binding.tvDescription.text = dataList.description
 
             binding.btnRequestServis.setOnClickListener {
-                requestService(it,dataList.id)
+                requestService(it,dataList.id,idUser!!)
             }
         }
     }
@@ -44,8 +49,8 @@ class ServisAdapter(
 
     override fun getItemCount(): Int = servisList.size
 
-    private fun requestService(view: View, name: String) {
-        ApiClient.instances.requestServicePost("",name,"3","perbaiki dulu kanda", "","","","")
+    private fun requestService(view: View, name: String, idUser: String) {
+        ApiClient.instances.requestServicePost("",name,idUser,"perbaiki dulu kanda", "","","","")
             .enqueue(object : Callback<DataResponse>{
                 override fun onResponse(
                     call: Call<DataResponse>,

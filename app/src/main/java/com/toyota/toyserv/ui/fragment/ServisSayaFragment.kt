@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import apotekku.projectapotekku.utils.Constant
+import apotekku.projectapotekku.utils.PreferencesHelper
 import com.google.android.material.tabs.TabLayoutMediator
 import com.toyota.toyserv.adapter.ViewPagerAdapter
 import com.toyota.toyserv.databinding.FragmentServisSayaBinding
@@ -12,6 +14,7 @@ import com.toyota.toyserv.databinding.FragmentServisSayaBinding
 class ServisSayaFragment : Fragment() {
     private var _binding: FragmentServisSayaBinding? = null
     private val binding get() = _binding!!
+    private lateinit var sharedPref: PreferencesHelper
 
     override fun onDestroy() {
         super.onDestroy()
@@ -21,16 +24,17 @@ class ServisSayaFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentServisSayaBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val item = "servis saya"
+        sharedPref = PreferencesHelper(requireActivity())
 
-        val userType = "customer"
+        val item = "servis saya"
+        val userType = sharedPref.getString(Constant.PREF_IS_LOGIN_TYPE)
 
         if (userType == "customer") {
             val totalItem = 3
