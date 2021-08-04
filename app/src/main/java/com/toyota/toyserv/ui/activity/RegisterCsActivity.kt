@@ -3,43 +3,31 @@ package com.toyota.toyserv.ui.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import com.toyota.toyserv.databinding.ActivityRegisterBinding
+import com.toyota.toyserv.databinding.ActivityRegisterCsBinding
 import com.toyota.toyserv.model.DataResponse
 import com.toyota.toyserv.network.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RegisterActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityRegisterBinding
+class RegisterCsActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityRegisterCsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        binding = ActivityRegisterCsBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
         supportActionBar?.hide()
 
         binding.btnRegister.setOnClickListener {
             val fullName = binding.inputFullname.text.toString()
-            val vehicle = binding.inputVehicle.text.toString()
-            val policeNumber = binding.inputPoliceNumber.text.toString()
-            val phoneNumber = binding.inputPhoneNumber.text.toString()
             val username = binding.inputUsername.text.toString()
             val password = binding.inputPassword.text.toString()
 
             when {
                 fullName.isEmpty() -> {
                     binding.inputUsername.error = "masukkan fullname"
-                }
-                vehicle.isEmpty() -> {
-                    binding.inputUsername.error = "masukkan vehicle"
-                }
-                policeNumber.isEmpty() -> {
-                    binding.inputUsername.error = "masukkan no. polisi"
-                }
-                phoneNumber.isEmpty() -> {
-                    binding.inputUsername.error = "masukkan no. hp"
                 }
                 username.isEmpty() -> {
                     binding.inputUsername.error = "masukkan username"
@@ -49,16 +37,17 @@ class RegisterActivity : AppCompatActivity() {
                 }
                 else -> register(
                     fullName,
-                    vehicle,
-                    policeNumber,
-                    phoneNumber,
+                    "",
+                    "",
+                    "",
                     username,
                     password,
-                    "customer"
+                    "customer_service"
                 )
             }
         }
     }
+
 
     private fun register(
         fullName: String,
@@ -85,14 +74,14 @@ class RegisterActivity : AppCompatActivity() {
 
                 if (response.isSuccessful && value == "1") {
 
-                    Toast.makeText(this@RegisterActivity, message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@RegisterCsActivity, message, Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@RegisterActivity, message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@RegisterCsActivity, message, Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<DataResponse>, t: Throwable) {
-                Toast.makeText(this@RegisterActivity, t.message.toString(), Toast.LENGTH_SHORT)
+                Toast.makeText(this@RegisterCsActivity, t.message.toString(), Toast.LENGTH_SHORT)
                     .show()
             }
 

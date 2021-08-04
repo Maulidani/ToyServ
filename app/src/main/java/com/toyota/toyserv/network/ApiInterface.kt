@@ -14,6 +14,18 @@ interface ApiInterface {
         @Field("password") password: String
     ): Call<DataResponse>
 
+    @FormUrlEncoded
+    @POST("register.php")
+    fun register(
+        @Field("name") fullName: String,
+        @Field("vehicle") vehicle: String,
+        @Field("police_number") policeNumber: String,
+        @Field("phone") phoneNumber: String,
+        @Field("username") username: String,
+        @Field("password") password: String,
+        @Field("type") type: String,
+    ): Call<DataResponse>
+
     @GET("vehicle_operation.php")
     fun vehicleOperation(): Call<DataResponse>
 

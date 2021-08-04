@@ -3,17 +3,23 @@ package com.toyota.toyserv.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.toyota.toyserv.databinding.ItemSudahDijadwalkanServisBinding
+import com.toyota.toyserv.model.DataResponse
 import com.toyota.toyserv.model.DataResult
+import com.toyota.toyserv.network.ApiClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ServisSudahDijadwalkanAdapter(
     private val sudahDijadwalkanList: ArrayList<DataResult>,
-    _all: String
+//    _all: String
 ) :
     RecyclerView.Adapter<ServisSudahDijadwalkanAdapter.ListViewHolder>() {
 
-    val all = _all
+//    val all = _all
 
     inner class ListViewHolder(private val binding: ItemSudahDijadwalkanServisBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -22,11 +28,9 @@ class ServisSudahDijadwalkanAdapter(
 
             val userType = "customer_service"
             if (userType == "customer_service") {
-                if (all == "user") {
-                    //
-                } else if (all == "all") {
-                    binding.btnSelesai.visibility = View.VISIBLE
-
+                binding.btnSelesai.visibility = View.VISIBLE
+                binding.btnSelesai.setOnClickListener {
+                    selesaikan(it, "14", "finishAt", "nextAt")
                 }
             }
 
@@ -54,4 +58,28 @@ class ServisSudahDijadwalkanAdapter(
     }
 
     override fun getItemCount(): Int = sudahDijadwalkanList.size
+
+    private fun selesaikan(view: View, idService: String, finishAt: String, nextAt: String) {
+        ApiClient.instances.requestServicePost(idService, "", "", "", "", "", finishAt, nextAt)
+            .enqueue(object : Callback<DataResponse> {
+                override fun onResponse(
+                    call: Call<DataResponse>,
+                    response: Response<DataResponse>
+                ) {
+                    val value = response.body()?.value
+                    val message = response.body()?.message
+
+                    if (response.isSuccessful && value == "1") {
+                        Toast.makeText(view.context, message.toString(), Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(view.context, message.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<DataResponse>, t: Throwable) {
+                    Toast.makeText(view.context, t.message.toString(), Toast.LENGTH_SHORT).show()
+                }
+
+            })
+    }
 }

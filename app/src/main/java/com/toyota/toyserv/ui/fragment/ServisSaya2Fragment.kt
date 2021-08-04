@@ -48,7 +48,7 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment() {
         layoutManager = LinearLayoutManager(requireActivity())
         binding.rv.layoutManager = layoutManager
 
-        val userLogin = "2"
+        val userLogin = "3"
 
         if (all=="all"){
             servisSemua(type)
@@ -79,19 +79,17 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment() {
 
                             }
                             "sudah_dijadwalkan" -> {
-                                adapter2 = ServisSudahDijadwalkanAdapter(result!!, "user")
+                                adapter2 = ServisSudahDijadwalkanAdapter(result!!)
                                 binding.rv.adapter = adapter2
                                 adapter2.notifyDataSetChanged()
-
                             }
                             "selesai" -> {
                                 adapter3 = ServisSelesaiAdapter(result!!)
                                 binding.rv.adapter = adapter3
                                 adapter3.notifyDataSetChanged()
                             }
-
                             "dijadwalkan_cs" -> {
-                                adapter2 = ServisSudahDijadwalkanAdapter(result!!, "user")
+                                adapter2 = ServisSudahDijadwalkanAdapter(result!!)
                                 binding.rv.adapter = adapter2
                                 adapter2.notifyDataSetChanged()
                             }
@@ -140,7 +138,7 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment() {
 
                             }
                             "sudah_dijadwalkan" -> {
-                                adapter2 = ServisSudahDijadwalkanAdapter(result!!,"all")
+                                adapter2 = ServisSudahDijadwalkanAdapter(result!!)
                                 binding.rv.adapter = adapter2
                                 adapter2.notifyDataSetChanged()
 

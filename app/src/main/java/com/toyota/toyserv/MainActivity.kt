@@ -11,6 +11,7 @@ import apotekku.projectapotekku.utils.PreferencesHelper
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.toyota.toyserv.databinding.ActivityMainBinding
 import com.toyota.toyserv.ui.activity.LoginActivity
+import com.toyota.toyserv.ui.fragment.AkunFragment
 import com.toyota.toyserv.ui.fragment.PermintaanServisFragment
 import com.toyota.toyserv.ui.fragment.ServisFragment
 import com.toyota.toyserv.ui.fragment.ServisSayaFragment
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.imgMenu.setOnClickListener {
+        binding.imgLogout.setOnClickListener {
             sharedPref.logout()
             Toast.makeText(this, "Keluar", Toast.LENGTH_SHORT).show()
             startActivity(Intent(Intent(this, LoginActivity::class.java)))
@@ -102,14 +103,14 @@ class MainActivity : AppCompatActivity() {
         binding.cardOne.setOnClickListener {
             binding.sheet.visibility = View.VISIBLE
             binding.tvInfo.text = "Permintaan Servis"
-//            loadFragment(ServisFragment())
+            loadFragment(PermintaanServisFragment())
         }
 
         binding.tvCardTwo.text = "Akun"
         binding.cardTwo.setOnClickListener {
             binding.sheet.visibility = View.VISIBLE
             binding.tvInfo.text = "Akun"
-//            loadFragment(ServisSayaFragment())
+            loadFragment(AkunFragment())
         }
     }
 

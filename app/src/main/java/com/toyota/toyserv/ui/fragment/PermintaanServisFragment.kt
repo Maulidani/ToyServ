@@ -33,7 +33,7 @@ class PermintaanServisFragment : Fragment() {
 
         val userType = "customer_service"
 
-        if (userType == "customer_service") {
+        if (userType == "customer_service" || userType == "admin") {
             val totalItem = 3
             val viewPagerAdapter = ViewPagerAdapter(
                 requireActivity().supportFragmentManager,
