@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         val type = sharedPref.getString(Constant.PREF_IS_LOGIN_TYPE)
         val id = sharedPref.getString(Constant.PREF_IS_LOGIN_ID)
 
-        Toast.makeText(this, id.toString(), Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "id  : ${id.toString()}", Toast.LENGTH_SHORT).show()
 
         binding.tvTypeName.text = type
 

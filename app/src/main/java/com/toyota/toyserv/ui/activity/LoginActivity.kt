@@ -64,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
 
                     if (response.isSuccessful && value == "1") {
                         val type = response.body()?.type
-                        val id = response.body()?.type
+                        val id = response.body()?.id
                         saveSession(id, type)
                         Toast.makeText(this@LoginActivity, message, Toast.LENGTH_SHORT)
                             .show()
