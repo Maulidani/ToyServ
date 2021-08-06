@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.toyota.toyserv.ui.fragment.Akun2Fragment
 import com.toyota.toyserv.ui.fragment.Servis2Fragment
 import com.toyota.toyserv.ui.fragment.ServisSaya2Fragment
 
@@ -32,22 +33,28 @@ class ViewPagerAdapter(
             }
         } else if (item == "servis saya" && total == 3) {
             return when (position) {
-                0 -> ServisSaya2Fragment("belum_dijadwalkan","")
-                1 -> ServisSaya2Fragment("sudah_dijadwalkan","")
-                2 -> ServisSaya2Fragment("selesai","")
+                0 -> ServisSaya2Fragment("belum_dijadwalkan", "")
+                1 -> ServisSaya2Fragment("sudah_dijadwalkan", "")
+                2 -> ServisSaya2Fragment("selesai", "")
                 else -> Fragment()
             }
         } else if (item == "servis saya" && total == 2) {
             return when (position) {
-                0 -> ServisSaya2Fragment("dijadwalkan_cs","")
-                1 -> ServisSaya2Fragment("selesai_cs","")
+                0 -> ServisSaya2Fragment("dijadwalkan_cs", "")
+                1 -> ServisSaya2Fragment("selesai_cs", "")
                 else -> Fragment()
             }
-        } else if (item == "permintaan_servis"){
+        } else if (item == "permintaan_servis") {
             return when (position) {
-                0 -> ServisSaya2Fragment("belum_dijadwalkan","all")
-                1 -> ServisSaya2Fragment("sudah_dijadwalkan","all")
-                2 -> ServisSaya2Fragment("selesai","all")
+                0 -> ServisSaya2Fragment("belum_dijadwalkan", "all")
+                1 -> ServisSaya2Fragment("sudah_dijadwalkan", "all")
+                2 -> ServisSaya2Fragment("selesai", "all")
+                else -> Fragment()
+            }
+        } else if (item == "akun") {
+            return when (position) {
+                0 -> Akun2Fragment("customer")
+                1 -> Akun2Fragment("customer_service")
                 else -> Fragment()
             }
         }

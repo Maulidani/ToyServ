@@ -26,6 +26,11 @@ interface ApiInterface {
         @Field("type") type: String,
     ): Call<DataResponse>
 
+    @GET("account.php")
+    fun getAkun(
+        @Query("type") type: String
+    ): Call<DataResponse>
+
     @GET("vehicle_operation.php")
     fun vehicleOperation(): Call<DataResponse>
 
