@@ -39,7 +39,7 @@ class ServisSudahDijadwalkanAdapter(
                     binding.btnSelesai.visibility = View.VISIBLE
 
                     binding.btnSelesai.setOnClickListener {
-                        selesaikan(it, idService, "finishAt", "nextAt")
+                        selesaikan(it, idService, "2018-08-08", "2018-08-08")
                     }
                 }
             }

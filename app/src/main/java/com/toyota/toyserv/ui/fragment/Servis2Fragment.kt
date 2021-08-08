@@ -14,8 +14,10 @@ import com.toyota.toyserv.model.DataResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
-class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment() {
+class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment(),
+    ServisAdapter.iUserRecycler {
     private val type = _type
     private val idVehicleOperation = _idVehicleOperation
 
@@ -59,7 +61,7 @@ class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment() {
 
                     if (response.isSuccessful && value == "1") {
                         Toast.makeText(requireActivity(), "sukses", Toast.LENGTH_SHORT).show()
-                        adapter = ServisAdapter(result!!)
+                        adapter = ServisAdapter(result!!,this@Servis2Fragment)
                         binding.rv.adapter = adapter
                         adapter.notifyDataSetChanged()
 
@@ -79,4 +81,52 @@ class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment() {
             })
     }
 
+    override fun refreshView(idService: String, idUser: String, name: String) {
+        binding.parentAddService.visibility = View.VISIBLE
+
+        binding.tvService.text = name
+        binding.xService.setOnClickListener {
+            binding.parentAddService.visibility = View.INVISIBLE
+
+        }
+        binding.btnAdd.setOnClickListener {
+            val note = binding.inputNote.text.toString()
+
+            requestService(idService, idUser, note)
+        }
+    }
+
+    private fun requestService(idService: String, idUser: String, note: String) {
+        ApiClient.instances.requestServicePost(
+            "",
+            idService,
+            idUser,
+            note,
+            "",
+            "",
+            "",
+            ""
+        )
+            .enqueue(object : Callback<DataResponse> {
+                override fun onResponse(
+                    call: Call<DataResponse>,
+                    response: Response<DataResponse>
+                ) {
+                    val value = response.body()?.value
+                    val message = response.body()?.message
+
+                    if (response.isSuccessful && value == "1") {
+                        Toast.makeText(requireActivity(), message.toString(), Toast.LENGTH_SHORT).show()
+                        binding.parentAddService.visibility = View.INVISIBLE
+                    } else {
+                        Toast.makeText(requireActivity(), message.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<DataResponse>, t: Throwable) {
+                    Toast.makeText(requireActivity(), t.message.toString(), Toast.LENGTH_SHORT).show()
+                }
+
+            })
+    }
 }

@@ -1,5 +1,7 @@
 package com.toyota.toyserv.ui.fragment
 
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,8 +20,11 @@ import com.toyota.toyserv.model.DataResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
-class ServisSaya2Fragment(_type: String, _all: String) : Fragment() {
+class ServisSaya2Fragment(_type: String, _all: String) : Fragment(),
+    ServisBelumDijadwalkanAdapter.iUserRecycler {
     private val type = _type
     private val all = _all
 
@@ -32,6 +37,8 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment() {
     private lateinit var adapter3: ServisSelesaiAdapter
 
     private lateinit var sharedPref: PreferencesHelper
+
+    private lateinit var datePickerDialog: DatePickerDialog
 
     override fun onDestroy() {
         super.onDestroy()
@@ -78,13 +85,16 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment() {
                         when (type) {
 
                             "belum_dijadwalkan" -> {
-                                adapter = ServisBelumDijadwalkanAdapter(result!!)
+                                adapter = ServisBelumDijadwalkanAdapter(
+                                    result!!,
+                                    this@ServisSaya2Fragment
+                                )
                                 binding.rv.adapter = adapter
                                 adapter.notifyDataSetChanged()
 
                             }
                             "sudah_dijadwalkan" -> {
-                                adapter2 = ServisSudahDijadwalkanAdapter(result!!,"all")
+                                adapter2 = ServisSudahDijadwalkanAdapter(result!!, "all")
                                 binding.rv.adapter = adapter2
                                 adapter2.notifyDataSetChanged()
                             }
@@ -94,7 +104,7 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment() {
                                 adapter3.notifyDataSetChanged()
                             }
                             "dijadwalkan_cs" -> {
-                                adapter2 = ServisSudahDijadwalkanAdapter(result!!,"")
+                                adapter2 = ServisSudahDijadwalkanAdapter(result!!, "")
                                 binding.rv.adapter = adapter2
                                 adapter2.notifyDataSetChanged()
                             }
@@ -137,13 +147,16 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment() {
                         when (type) {
 
                             "belum_dijadwalkan" -> {
-                                adapter = ServisBelumDijadwalkanAdapter(result!!)
+                                adapter = ServisBelumDijadwalkanAdapter(
+                                    result!!,
+                                    this@ServisSaya2Fragment
+                                )
                                 binding.rv.adapter = adapter
                                 adapter.notifyDataSetChanged()
 
                             }
                             "sudah_dijadwalkan" -> {
-                                adapter2 = ServisSudahDijadwalkanAdapter(result!!,"all")
+                                adapter2 = ServisSudahDijadwalkanAdapter(result!!, "all")
                                 binding.rv.adapter = adapter2
                                 adapter2.notifyDataSetChanged()
 
@@ -171,4 +184,89 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment() {
                 }
             })
     }
+
+    @SuppressLint("SimpleDateFormat")
+    override fun refreshView(
+        idService: String,
+        idCs: String,
+        serviceName: String,
+        typeService: String,
+        vehicle: String,
+        userName: String,
+        note: String
+    ) {
+
+        binding.parentJadwalkan.visibility = View.VISIBLE
+
+        setDateTimeField()
+        binding.xJadwalkan.setOnClickListener {
+            binding.parentJadwalkan.visibility = View.INVISIBLE
+        }
+
+        binding.tvServiceName.text = serviceName
+        binding.tvServiceType.text = typeService
+        binding.tvVechile.text = vehicle
+        binding.tvPemilik.text = userName
+        binding.tvNote.text = note
+
+        binding.inputJadwal.setOnClickListener {
+            datePickerDialog.show()
+        }
+        binding.btnJadwalkan.setOnClickListener {
+
+            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+            val awal = SimpleDateFormat("dd MMMM yyyy")
+
+            val date: Date? = awal.parse(binding.inputJadwal.text.toString())
+            val tanggalConversi: String = simpleDateFormat.format(date!!)
+
+            jadwalkan(idService, idCs, tanggalConversi)
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun setDateTimeField() {
+        val newCalendar = Calendar.getInstance()
+        datePickerDialog = DatePickerDialog(
+            requireActivity(),
+            { _, year, monthOfYear, dayOfMonth ->
+                val newDate = Calendar.getInstance()
+                newDate[year, monthOfYear] = dayOfMonth
+                val sd = SimpleDateFormat("dd MMMM yyyy")
+                val startDate = newDate.time
+                val fdate = sd.format(startDate)
+                binding.inputJadwal.setText(fdate)
+            }, newCalendar[Calendar.YEAR], newCalendar[Calendar.MONTH],
+            newCalendar[Calendar.DAY_OF_MONTH]
+        )
+    }
+
+    private fun jadwalkan(idService: String, cs: String, serviceAt: String) {
+        ApiClient.instances.requestServicePost(idService, "", "", "", cs, serviceAt, "", "")
+            .enqueue(object : Callback<DataResponse> {
+                override fun onResponse(
+                    call: Call<DataResponse>,
+                    response: Response<DataResponse>
+                ) {
+                    val value = response.body()?.value
+                    val message = response.body()?.message
+
+                    if (response.isSuccessful && value == "1") {
+                        Toast.makeText(requireActivity(), message.toString(), Toast.LENGTH_SHORT)
+                            .show()
+                        binding.parentJadwalkan.visibility = View.INVISIBLE
+                    } else {
+                        Toast.makeText(requireActivity(), message.toString(), Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+
+                override fun onFailure(call: Call<DataResponse>, t: Throwable) {
+                    Toast.makeText(requireActivity(), t.message.toString(), Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+            })
+    }
+
 }

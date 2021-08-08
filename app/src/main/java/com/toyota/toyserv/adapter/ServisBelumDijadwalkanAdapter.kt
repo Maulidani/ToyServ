@@ -17,6 +17,7 @@ import retrofit2.Response
 
 class ServisBelumDijadwalkanAdapter(
     private val belumDijadwalkanList: ArrayList<DataResult>,
+    private val mListener: ServisBelumDijadwalkanAdapter.iUserRecycler
 //    _all: String
 ) :
     RecyclerView.Adapter<ServisBelumDijadwalkanAdapter.ListViewHolder>() {
@@ -34,13 +35,15 @@ class ServisBelumDijadwalkanAdapter(
             val userType = sharedPref.getString(Constant.PREF_IS_LOGIN_TYPE)
             val idCs = sharedPref.getString(Constant.PREF_IS_LOGIN_ID)
 
-            val serviceAt = "2066"
+            val serviceAt = "2021-08-08"
 
             if (userType == "customer_service") {
 //                if (all != "all") {
                     binding.btnJadwalkan.visibility = View.VISIBLE
                     binding.btnJadwalkan.setOnClickListener {
-                        jadwalkan(it, idService, idCs!!, serviceAt)
+//                        jadwalkan(it, idService, idCs!!, serviceAt)
+                        mListener.refreshView(idService, idCs!!, dataList.service_name, dataList.type_service, dataList.vehicle, dataList.user_name, dataList.note)
+
                     }
 //                }
             }
@@ -67,6 +70,19 @@ class ServisBelumDijadwalkanAdapter(
     }
 
     override fun getItemCount(): Int = belumDijadwalkanList.size
+
+
+    interface iUserRecycler {
+        fun refreshView(
+            idService: String,
+            idCs: String,
+            serviceName: String,
+            typeService: String,
+            vehicle: String,
+            userName: String,
+            note: String
+        )
+    }
 
     private fun jadwalkan(view: View, idService: String, cs: String, serviceAt: String) {
         ApiClient.instances.requestServicePost(idService, "", "", "", cs, serviceAt, "", "")

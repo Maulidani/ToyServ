@@ -16,7 +16,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ServisAdapter(
-    private val servisList: ArrayList<DataResult>
+    private val servisList: ArrayList<DataResult>,
+    private val mListener: iUserRecycler
+
 ) :
     RecyclerView.Adapter<ServisAdapter.ListViewHolder>() {
     private lateinit var sharedPref: PreferencesHelper
@@ -32,7 +34,8 @@ class ServisAdapter(
             binding.tvDescription.text = dataList.description
 
             binding.btnRequestServis.setOnClickListener {
-                requestService(it,dataList.id,idUser!!)
+//                requestService(it,dataList.id,idUser!!)
+                mListener.refreshView(dataList.id, idUser!!, dataList.name)
             }
         }
     }
@@ -49,9 +52,22 @@ class ServisAdapter(
 
     override fun getItemCount(): Int = servisList.size
 
+    interface iUserRecycler {
+        fun refreshView(idService: String, idUser: String, name: String)
+    }
+
     private fun requestService(view: View, name: String, idUser: String) {
-        ApiClient.instances.requestServicePost("",name,idUser,"perbaiki dulu kanda", "","","","")
-            .enqueue(object : Callback<DataResponse>{
+        ApiClient.instances.requestServicePost(
+            "",
+            name,
+            idUser,
+            "perbaiki dulu kanda",
+            "",
+            "",
+            "",
+            ""
+        )
+            .enqueue(object : Callback<DataResponse> {
                 override fun onResponse(
                     call: Call<DataResponse>,
                     response: Response<DataResponse>
@@ -62,7 +78,7 @@ class ServisAdapter(
                     if (response.isSuccessful && value == "1") {
                         Toast.makeText(view.context, message.toString(), Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(view.context,  message.toString(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(view.context, message.toString(), Toast.LENGTH_SHORT).show()
                     }
                 }
 

@@ -14,6 +14,13 @@ interface ApiInterface {
         @Field("password") password: String
     ): Call<DataResponse>
 
+
+    @FormUrlEncoded
+    @POST("logout.php")
+    fun logout(
+        @Field("id") id: String
+    ): Call<DataResponse>
+
     @FormUrlEncoded
     @POST("register.php")
     fun register(
@@ -24,6 +31,13 @@ interface ApiInterface {
         @Field("username") username: String,
         @Field("password") password: String,
         @Field("type") type: String,
+    ): Call<DataResponse>
+
+    @FormUrlEncoded
+    @POST("register_app_token.php")
+    fun registerToken(
+        @Field("id") id: String,
+        @Field("token") token: String
     ): Call<DataResponse>
 
     @GET("account.php")
