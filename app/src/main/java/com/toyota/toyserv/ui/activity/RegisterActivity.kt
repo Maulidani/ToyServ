@@ -20,6 +20,25 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(view)
         supportActionBar?.hide()
 
+        val intentFullName = intent.getStringExtra("full_name")
+        val intentVehicle = intent.getStringExtra("vehicle")
+        val intentPoliceNumber = intent.getStringExtra("police_number")
+        val intentPhone = intent.getStringExtra("phone")
+        val intentUsername = intent.getStringExtra("username")
+        val intentPassword = intent.getStringExtra("password")
+
+        val intentData = intent.getBooleanExtra("intent", false)
+
+        if (intentData) {
+            binding.inputFullname.setText(intentFullName)
+            binding.inputVehicle.setText(intentVehicle)
+            binding.inputPoliceNumber.setText(intentPoliceNumber)
+            binding.inputPhoneNumber.setText(intentPhone)
+            binding.inputUsername.setText(intentUsername)
+            binding.inputPassword.setText(intentPassword)
+            binding.btnRegister.text = "edit"
+        }
+
         binding.btnRegister.setOnClickListener {
             val fullName = binding.inputFullname.text.toString()
             val vehicle = binding.inputVehicle.text.toString()
@@ -47,15 +66,21 @@ class RegisterActivity : AppCompatActivity() {
                 password.isEmpty() -> {
                     binding.inputUsername.error = "masukkan password"
                 }
-                else -> register(
-                    fullName,
-                    vehicle,
-                    policeNumber,
-                    phoneNumber,
-                    username,
-                    password,
-                    "customer"
-                )
+                else -> {
+                    if (intentData) {
+                        Toast.makeText(this, "edit", Toast.LENGTH_SHORT).show()
+                    } else {
+                        register(
+                            fullName,
+                            vehicle,
+                            policeNumber,
+                            phoneNumber,
+                            username,
+                            password,
+                            "customer"
+                        )
+                    }
+                }
             }
         }
     }

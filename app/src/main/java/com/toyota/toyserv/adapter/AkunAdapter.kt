@@ -1,5 +1,6 @@
 package com.toyota.toyserv.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,6 +8,7 @@ import apotekku.projectapotekku.utils.Constant
 import apotekku.projectapotekku.utils.PreferencesHelper
 import com.toyota.toyserv.databinding.ItemAccountBinding
 import com.toyota.toyserv.model.DataResult
+import com.toyota.toyserv.ui.activity.RegisterActivity
 
 class AkunAdapter(private val accountList: ArrayList<DataResult>) :
     RecyclerView.Adapter<AkunAdapter.ListViewHolder>() {
@@ -20,6 +22,19 @@ class AkunAdapter(private val accountList: ArrayList<DataResult>) :
             val userType = sharedPref.getString(Constant.PREF_IS_LOGIN_TYPE)
 
             binding.tvName.text = dataList.name
+
+            binding.cardAccount.setOnClickListener {
+                it.context.startActivity(
+                    Intent(it.context, RegisterActivity::class.java)
+                        .putExtra("full_name", dataList.name)
+                        .putExtra("vehicle", dataList.vehicle)
+                        .putExtra("police_number", dataList.police_number)
+                        .putExtra("phone", dataList.phone)
+                        .putExtra("username", dataList.username)
+                        .putExtra("password", dataList.password)
+                        .putExtra("intent", true)
+                )
+            }
 
         }
     }

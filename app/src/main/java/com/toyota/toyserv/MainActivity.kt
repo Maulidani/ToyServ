@@ -49,17 +49,28 @@ class MainActivity : AppCompatActivity() {
         when (type) {
             "customer" -> {
                 customer()
+                binding.imgLogout.setOnClickListener {
+                    logout(id)
+                }
             }
             "customer_service" -> {
                 customerService()
+                binding.imgLogout.setOnClickListener {
+                    sharedPref.logout()
+                    Toast.makeText(this@MainActivity, "Keluar", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(Intent(this@MainActivity, LoginActivity::class.java)))
+                    finish()
+                }
             }
             "admin" -> {
                 admin()
+                binding.imgLogout.setOnClickListener {
+                    sharedPref.logout()
+                    Toast.makeText(this@MainActivity, "Keluar", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(Intent(this@MainActivity, LoginActivity::class.java)))
+                    finish()
+                }
             }
-        }
-
-        binding.imgLogout.setOnClickListener {
-            logout(id)
         }
     }
 

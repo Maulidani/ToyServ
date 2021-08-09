@@ -47,6 +47,9 @@ class Akun2Fragment(_type: String) : Fragment() {
         layoutManager = LinearLayoutManager(requireActivity())
         binding.rv.layoutManager = layoutManager
 
+        binding.fabAdd.setOnClickListener {
+            Toast.makeText(requireActivity(), "click add", Toast.LENGTH_SHORT).show()
+        }
         getAkun(type)
     }
 
