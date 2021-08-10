@@ -20,6 +20,20 @@ class RegisterCsActivity : AppCompatActivity() {
         setContentView(view)
         supportActionBar?.hide()
 
+        val intentId = intent.getStringExtra("id")
+        val intentFullName = intent.getStringExtra("full_name")
+        val intentUsername = intent.getStringExtra("username")
+        val intentPassword = intent.getStringExtra("password")
+
+        val intentData = intent.getBooleanExtra("intent", false)
+
+        if (intentData) {
+            binding.inputFullname.setText(intentFullName)
+            binding.inputUsername.setText(intentUsername)
+            binding.inputPassword.setText(intentPassword)
+            binding.btnRegister.text = "edit"
+        }
+
         binding.btnRegister.setOnClickListener {
             val fullName = binding.inputFullname.text.toString()
             val username = binding.inputUsername.text.toString()
@@ -35,15 +49,23 @@ class RegisterCsActivity : AppCompatActivity() {
                 password.isEmpty() -> {
                     binding.inputUsername.error = "masukkan password"
                 }
-                else -> register(
-                    fullName,
-                    "",
-                    "",
-                    "",
-                    username,
-                    password,
-                    "customer_service"
-                )
+                else -> {
+                    if (intentData) {
+                        editAkun(
+                            intentId, fullName, username, password,
+                            "customer_service"
+                        )
+                    }
+                    register(
+                        fullName,
+                        "",
+                        "",
+                        "",
+                        username,
+                        password,
+                        "customer_service"
+                    )
+                }
             }
         }
     }
@@ -84,7 +106,44 @@ class RegisterCsActivity : AppCompatActivity() {
                 Toast.makeText(this@RegisterCsActivity, t.message.toString(), Toast.LENGTH_SHORT)
                     .show()
             }
-
         })
+    }
+
+    private fun editAkun(
+        intentId: String?,
+        fullName: String,
+        username: String,
+        password: String,
+        type: String
+    ) {
+        ApiClient.instances.editAccount(intentId!!, fullName, "", "", "", username, password, type)
+            .enqueue(
+                object : Callback<DataResponse> {
+                    override fun onResponse(
+                        call: Call<DataResponse>,
+                        response: Response<DataResponse>
+                    ) {
+                        val value = response.body()?.value
+                        val message = response.body()?.message
+
+                        if (response.isSuccessful && value == "1") {
+
+                            Toast.makeText(this@RegisterCsActivity, message, Toast.LENGTH_SHORT)
+                                .show()
+                        } else {
+                            Toast.makeText(this@RegisterCsActivity, message, Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<DataResponse>, t: Throwable) {
+                        Toast.makeText(
+                            this@RegisterCsActivity,
+                            t.message.toString(),
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+                })
     }
 }

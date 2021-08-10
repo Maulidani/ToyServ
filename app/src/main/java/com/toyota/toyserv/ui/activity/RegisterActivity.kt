@@ -20,6 +20,7 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(view)
         supportActionBar?.hide()
 
+        val intentId = intent.getStringExtra("id")
         val intentFullName = intent.getStringExtra("full_name")
         val intentVehicle = intent.getStringExtra("vehicle")
         val intentPoliceNumber = intent.getStringExtra("police_number")
@@ -68,7 +69,16 @@ class RegisterActivity : AppCompatActivity() {
                 }
                 else -> {
                     if (intentData) {
-                        Toast.makeText(this, "edit", Toast.LENGTH_SHORT).show()
+                        editAkun(
+                            intentId!!,
+                            fullName,
+                            vehicle,
+                            policeNumber,
+                            phoneNumber,
+                            username,
+                            password,
+                            "customer"
+                        )
                     } else {
                         register(
                             fullName,
@@ -122,5 +132,49 @@ class RegisterActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    private fun editAkun(
+        id: String,
+        fullName: String,
+        vehicle: String,
+        policeNumber: String,
+        phoneNumber: String,
+        username: String,
+        password: String,
+        type: String
+    ) {
+
+        ApiClient.instances.editAccount(
+            id,
+            fullName,
+            vehicle,
+            policeNumber,
+            phoneNumber,
+            username,
+            password,
+            type
+        ).enqueue(
+            object : Callback<DataResponse> {
+                override fun onResponse(
+                    call: Call<DataResponse>,
+                    response: Response<DataResponse>
+                ) {
+                    val value = response.body()?.value
+                    val message = response.body()?.message
+
+                    if (response.isSuccessful && value == "1") {
+
+                        Toast.makeText(this@RegisterActivity, message, Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@RegisterActivity, message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<DataResponse>, t: Throwable) {
+                    Toast.makeText(this@RegisterActivity, t.message.toString(), Toast.LENGTH_SHORT)
+                        .show()
+                }
+            })
     }
 }

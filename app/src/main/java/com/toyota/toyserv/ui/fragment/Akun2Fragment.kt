@@ -1,5 +1,6 @@
 package com.toyota.toyserv.ui.fragment
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import apotekku.projectapotekku.utils.Constant
 import apotekku.projectapotekku.utils.PreferencesHelper
 import com.toyota.toyserv.adapter.AkunAdapter
 import com.toyota.toyserv.databinding.FragmentAkun2Binding
@@ -25,6 +25,14 @@ class Akun2Fragment(_type: String) : Fragment() {
 
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var adapter: AkunAdapter
+
+    private lateinit var progressDialog: ProgressDialog
+//    progressDialog = ProgressDialog(this)
+//    progressDialog.setTitle("Loading")
+//    progressDialog.setMessage("Memuat Informasi...")
+//    progressDialog.setCancelable(false)
+//    progressDialog.show()
+//    progressDialog.dismiss()
 
     override fun onDestroy() {
         super.onDestroy()
@@ -61,7 +69,7 @@ class Akun2Fragment(_type: String) : Fragment() {
                 val result = response.body()?.result
 
                 if (response.isSuccessful && value == "1") {
-                    adapter = AkunAdapter(result!!)
+                    adapter = AkunAdapter(result!!,userType)
                     binding.rv.adapter = adapter
                     adapter.notifyDataSetChanged()
                     Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()

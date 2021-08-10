@@ -14,7 +14,6 @@ interface ApiInterface {
         @Field("password") password: String
     ): Call<DataResponse>
 
-
     @FormUrlEncoded
     @POST("logout.php")
     fun logout(
@@ -30,7 +29,27 @@ interface ApiInterface {
         @Field("phone") phoneNumber: String,
         @Field("username") username: String,
         @Field("password") password: String,
-        @Field("type") type: String,
+        @Field("type") type: String
+    ): Call<DataResponse>
+
+    @FormUrlEncoded
+    @POST("edit_account.php")
+    fun editAccount(
+        @Field("id") id: String,
+        @Field("name") fullName: String,
+        @Field("vehicle") vehicle: String,
+        @Field("police_number") policeNumber: String,
+        @Field("phone") phoneNumber: String,
+        @Field("username") username: String,
+        @Field("password") password: String,
+        @Field("type") type: String
+    ): Call<DataResponse>
+
+    @FormUrlEncoded
+    @POST("delete_account.php")
+    fun deleteAkccount(
+        @Field("id") td: String,
+        @Field("type") type: String
     ): Call<DataResponse>
 
     @FormUrlEncoded
