@@ -1,5 +1,8 @@
+@file:Suppress("DEPRECATION")
+
 package com.toyota.toyserv.ui.fragment
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +29,7 @@ class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment(),
 
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var adapter: ServisAdapter
+    private lateinit var progressDialog: ProgressDialog
 
     override fun onDestroy() {
         super.onDestroy()
@@ -43,6 +47,10 @@ class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        progressDialog = ProgressDialog(requireActivity())
+        progressDialog.setTitle("Loading")
+        progressDialog.setCancelable(false)
+
         layoutManager = LinearLayoutManager(requireActivity())
         binding.rv.layoutManager = layoutManager
 
@@ -50,6 +58,8 @@ class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment(),
     }
 
     private fun servis(type: String, idVehicleOperation: String) {
+        progressDialog.show()
+
         ApiClient.instances.service(type, idVehicleOperation)
             .enqueue(object : Callback<DataResponse> {
                 override fun onResponse(
@@ -61,7 +71,7 @@ class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment(),
 
                     if (response.isSuccessful && value == "1") {
                         Toast.makeText(requireActivity(), "sukses", Toast.LENGTH_SHORT).show()
-                        adapter = ServisAdapter(result!!,this@Servis2Fragment)
+                        adapter = ServisAdapter(result!!, this@Servis2Fragment)
                         binding.rv.adapter = adapter
                         adapter.notifyDataSetChanged()
 
@@ -73,10 +83,14 @@ class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment(),
                     } else {
                         Toast.makeText(requireActivity(), "not Succes", Toast.LENGTH_SHORT).show()
                     }
+                    progressDialog.dismiss()
+
                 }
 
                 override fun onFailure(call: Call<DataResponse>, t: Throwable) {
                     Toast.makeText(requireActivity(), "Failure", Toast.LENGTH_SHORT).show()
+                    progressDialog.dismiss()
+
                 }
             })
     }
@@ -97,6 +111,8 @@ class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment(),
     }
 
     private fun requestService(idService: String, idUser: String, note: String) {
+        progressDialog.show()
+
         ApiClient.instances.requestServicePost(
             "",
             idService,
@@ -116,15 +132,21 @@ class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment(),
                     val message = response.body()?.message
 
                     if (response.isSuccessful && value == "1") {
-                        Toast.makeText(requireActivity(), message.toString(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireActivity(), message.toString(), Toast.LENGTH_SHORT)
+                            .show()
                         binding.parentAddService.visibility = View.INVISIBLE
                     } else {
-                        Toast.makeText(requireActivity(), message.toString(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireActivity(), message.toString(), Toast.LENGTH_SHORT)
+                            .show()
                     }
+                    progressDialog.dismiss()
+
                 }
 
                 override fun onFailure(call: Call<DataResponse>, t: Throwable) {
-                    Toast.makeText(requireActivity(), t.message.toString(), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity(), t.message.toString(), Toast.LENGTH_SHORT)
+                        .show()
+                    progressDialog.dismiss()
                 }
 
             })

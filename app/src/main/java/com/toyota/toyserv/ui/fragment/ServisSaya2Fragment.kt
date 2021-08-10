@@ -1,7 +1,10 @@
+@file:Suppress("DEPRECATION")
+
 package com.toyota.toyserv.ui.fragment
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.app.ProgressDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -40,6 +43,8 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment(),
 
     private lateinit var datePickerDialog: DatePickerDialog
 
+    private lateinit var progressDialog: ProgressDialog
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
@@ -56,6 +61,12 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sharedPref = PreferencesHelper(requireActivity())
+
+        progressDialog = ProgressDialog(requireActivity())
+        progressDialog.setTitle("Loading")
+        progressDialog.setMessage("Memuat Informasi...")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
 
         layoutManager = LinearLayoutManager(requireActivity())
         binding.rv.layoutManager = layoutManager
@@ -123,10 +134,14 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment(),
                     } else {
                         Toast.makeText(requireActivity(), "not Succes", Toast.LENGTH_SHORT).show()
                     }
+                    progressDialog.dismiss()
+
                 }
 
                 override fun onFailure(call: Call<DataResponse>, t: Throwable) {
                     Toast.makeText(requireActivity(), "Failure", Toast.LENGTH_SHORT).show()
+                    progressDialog.dismiss()
+
                 }
             })
     }
@@ -177,10 +192,14 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment(),
                     } else {
                         Toast.makeText(requireActivity(), "not Succes", Toast.LENGTH_SHORT).show()
                     }
+                    progressDialog.dismiss()
+
                 }
 
                 override fun onFailure(call: Call<DataResponse>, t: Throwable) {
                     Toast.makeText(requireActivity(), "Failure", Toast.LENGTH_SHORT).show()
+                    progressDialog.dismiss()
+
                 }
             })
     }
@@ -248,6 +267,8 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment(),
                     call: Call<DataResponse>,
                     response: Response<DataResponse>
                 ) {
+                    progressDialog.show()
+
                     val value = response.body()?.value
                     val message = response.body()?.message
 
@@ -259,11 +280,14 @@ class ServisSaya2Fragment(_type: String, _all: String) : Fragment(),
                         Toast.makeText(requireActivity(), message.toString(), Toast.LENGTH_SHORT)
                             .show()
                     }
+
+                    progressDialog.dismiss()
                 }
 
                 override fun onFailure(call: Call<DataResponse>, t: Throwable) {
                     Toast.makeText(requireActivity(), t.message.toString(), Toast.LENGTH_SHORT)
                         .show()
+                    progressDialog.dismiss()
                 }
 
             })

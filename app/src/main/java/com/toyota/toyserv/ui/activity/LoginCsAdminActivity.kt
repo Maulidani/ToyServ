@@ -1,5 +1,8 @@
+@file:Suppress("DEPRECATION")
+
 package com.toyota.toyserv.ui.activity
 
+import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,6 +23,7 @@ class LoginCsAdminActivity : AppCompatActivity() {
     private lateinit var sharedPref: PreferencesHelper
     private lateinit var binding: ActivityLoginCsAdminBinding
     private val typeLogin = listOf("customer_service", "admin")
+    private lateinit var progressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +32,11 @@ class LoginCsAdminActivity : AppCompatActivity() {
         setContentView(view)
         supportActionBar?.hide()
         sharedPref = PreferencesHelper(this)
+
+        progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Loading")
+        progressDialog.setMessage("Masuk...")
+        progressDialog.setCancelable(false)
 
         val adapterLogin = ArrayAdapter(this, R.layout.list_dropdown, typeLogin)
         binding.inputLoginAs.setAdapter(adapterLogin)
@@ -55,6 +64,7 @@ class LoginCsAdminActivity : AppCompatActivity() {
     }
 
     private fun login(type: String, username: String, password: String) {
+        progressDialog.show()
 
         ApiClient.instances.login(type, username, password)
             .enqueue(object : Callback<DataResponse> {
@@ -75,7 +85,7 @@ class LoginCsAdminActivity : AppCompatActivity() {
                         Toast.makeText(this@LoginCsAdminActivity, message, Toast.LENGTH_SHORT)
                             .show()
                     }
-
+                    progressDialog.dismiss()
                 }
 
                 override fun onFailure(call: Call<DataResponse>, t: Throwable) {
@@ -84,8 +94,8 @@ class LoginCsAdminActivity : AppCompatActivity() {
                         t.message.toString(),
                         Toast.LENGTH_SHORT
                     ).show()
+                    progressDialog.dismiss()
                 }
-
             })
     }
 

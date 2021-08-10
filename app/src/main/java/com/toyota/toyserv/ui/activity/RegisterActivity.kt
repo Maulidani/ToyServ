@@ -1,5 +1,6 @@
 package com.toyota.toyserv.ui.activity
 
+import android.app.ProgressDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -12,6 +13,7 @@ import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
+    private lateinit var progressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +21,9 @@ class RegisterActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         supportActionBar?.hide()
+        progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Loading")
+        progressDialog.setCancelable(false)
 
         val intentId = intent.getStringExtra("id")
         val intentFullName = intent.getStringExtra("full_name")
@@ -104,7 +109,7 @@ class RegisterActivity : AppCompatActivity() {
         password: String,
         type: String,
     ) {
-
+        progressDialog.show()
         ApiClient.instances.register(
             fullName,
             vehicle,
@@ -124,11 +129,14 @@ class RegisterActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this@RegisterActivity, message, Toast.LENGTH_SHORT).show()
                 }
+                progressDialog.dismiss()
             }
 
             override fun onFailure(call: Call<DataResponse>, t: Throwable) {
                 Toast.makeText(this@RegisterActivity, t.message.toString(), Toast.LENGTH_SHORT)
                     .show()
+
+                progressDialog.dismiss()
             }
 
         })
@@ -144,6 +152,7 @@ class RegisterActivity : AppCompatActivity() {
         password: String,
         type: String
     ) {
+        progressDialog.show()
 
         ApiClient.instances.editAccount(
             id,
@@ -169,11 +178,15 @@ class RegisterActivity : AppCompatActivity() {
                     } else {
                         Toast.makeText(this@RegisterActivity, message, Toast.LENGTH_SHORT).show()
                     }
+
+                    progressDialog.dismiss()
                 }
 
                 override fun onFailure(call: Call<DataResponse>, t: Throwable) {
                     Toast.makeText(this@RegisterActivity, t.message.toString(), Toast.LENGTH_SHORT)
                         .show()
+
+                    progressDialog.dismiss()
                 }
             })
     }

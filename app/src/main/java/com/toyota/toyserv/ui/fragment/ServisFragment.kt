@@ -1,5 +1,8 @@
+@file:Suppress("DEPRECATION")
+
 package com.toyota.toyserv.ui.fragment
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,6 +27,8 @@ class ServisFragment : Fragment(), VehicleOperationAdapter.callback {
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var adapter: VehicleOperationAdapter
     private var servis:Boolean = false
+
+    private lateinit var progressDialog: ProgressDialog
 
     override fun onDestroy() {
         super.onDestroy()
@@ -59,10 +64,12 @@ class ServisFragment : Fragment(), VehicleOperationAdapter.callback {
                 } else {
                     Toast.makeText(requireActivity(), "not Succes", Toast.LENGTH_SHORT).show()
                 }
+                progressDialog.dismiss()
             }
 
             override fun onFailure(call: Call<DataResponse>, t: Throwable) {
                 Toast.makeText(requireActivity(), "Failure", Toast.LENGTH_SHORT).show()
+                progressDialog.dismiss()
             }
 
         })
@@ -71,6 +78,11 @@ class ServisFragment : Fragment(), VehicleOperationAdapter.callback {
     private fun init(servis: Boolean, id: String) {
 
         if (!servis) {
+            progressDialog = ProgressDialog(requireActivity())
+            progressDialog.setTitle("Loading")
+            progressDialog.setMessage("Memuat Informasi...")
+            progressDialog.setCancelable(false)
+            progressDialog.show()
 
             binding.parentRv.visibility = View.VISIBLE
 

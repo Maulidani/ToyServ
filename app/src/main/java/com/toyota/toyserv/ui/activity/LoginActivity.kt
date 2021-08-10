@@ -1,7 +1,10 @@
+@file:Suppress("DEPRECATION")
+
 package com.toyota.toyserv.ui.activity
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +30,8 @@ class LoginActivity : AppCompatActivity() {
     private val CHANNEL_ID = "101"
     private lateinit var token: String
 
+    private lateinit var progressDialog: ProgressDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -35,7 +40,14 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.hide()
         sharedPref = PreferencesHelper(this)
 
+        progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Loading")
+        progressDialog.setMessage("Masuk...")
+        progressDialog.setCancelable(false)
+
         binding.btnLogin.setOnClickListener {
+            progressDialog.show()
+
             val username = binding.inputUsername.text.toString()
             val password = binding.inputPassword.text.toString()
             val type = "customer"
@@ -82,8 +94,8 @@ class LoginActivity : AppCompatActivity() {
                     } else {
                         Toast.makeText(this@LoginActivity, message, Toast.LENGTH_SHORT)
                             .show()
+                        progressDialog.dismiss()
                     }
-
                 }
 
                 override fun onFailure(call: Call<DataResponse>, t: Throwable) {
@@ -92,6 +104,7 @@ class LoginActivity : AppCompatActivity() {
                         t.message.toString(),
                         Toast.LENGTH_SHORT
                     ).show()
+                    progressDialog.dismiss()
                 }
             })
     }
@@ -103,6 +116,7 @@ class LoginActivity : AppCompatActivity() {
         sharedPref.put(Constant.PREF_IS_LOGIN, true)
         startActivity(Intent(this, MainActivity::class.java))
         finish()
+        progressDialog.dismiss()
     }
 
     private fun registerToken(id: String?, type: String?, token: String) {
@@ -126,15 +140,18 @@ class LoginActivity : AppCompatActivity() {
                         } else {
                             Toast.makeText(this@LoginActivity, message, Toast.LENGTH_SHORT)
                                 .show()
+                            progressDialog.dismiss()
                         }
                     } else {
                         getToken()
+                        progressDialog.dismiss()
                     }
                 }
 
                 override fun onFailure(call: Call<DataResponse>, t: Throwable) {
                     Toast.makeText(this@LoginActivity, t.message.toString(), Toast.LENGTH_SHORT)
                         .show()
+                    progressDialog.dismiss()
                 }
 
             })

@@ -1,5 +1,8 @@
+@file:Suppress("DEPRECATION")
+
 package com.toyota.toyserv.ui.activity
 
+import android.app.ProgressDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -12,6 +15,7 @@ import retrofit2.Response
 
 class RegisterCsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterCsBinding
+    private lateinit var progressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +23,10 @@ class RegisterCsActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         supportActionBar?.hide()
+
+        progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Loading")
+        progressDialog.setCancelable(false)
 
         val intentId = intent.getStringExtra("id")
         val intentFullName = intent.getStringExtra("full_name")
@@ -81,6 +89,7 @@ class RegisterCsActivity : AppCompatActivity() {
         type: String,
     ) {
 
+        progressDialog.show()
         ApiClient.instances.register(
             fullName,
             vehicle,
@@ -100,11 +109,15 @@ class RegisterCsActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this@RegisterCsActivity, message, Toast.LENGTH_SHORT).show()
                 }
+
+                progressDialog.dismiss()
             }
 
             override fun onFailure(call: Call<DataResponse>, t: Throwable) {
                 Toast.makeText(this@RegisterCsActivity, t.message.toString(), Toast.LENGTH_SHORT)
                     .show()
+
+                progressDialog.dismiss()
             }
         })
     }
@@ -116,6 +129,7 @@ class RegisterCsActivity : AppCompatActivity() {
         password: String,
         type: String
     ) {
+        progressDialog.show()
         ApiClient.instances.editAccount(intentId!!, fullName, "", "", "", username, password, type)
             .enqueue(
                 object : Callback<DataResponse> {
@@ -134,6 +148,8 @@ class RegisterCsActivity : AppCompatActivity() {
                             Toast.makeText(this@RegisterCsActivity, message, Toast.LENGTH_SHORT)
                                 .show()
                         }
+
+                        progressDialog.dismiss()
                     }
 
                     override fun onFailure(call: Call<DataResponse>, t: Throwable) {
@@ -143,6 +159,8 @@ class RegisterCsActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         )
                             .show()
+
+                        progressDialog.dismiss()
                     }
                 })
     }

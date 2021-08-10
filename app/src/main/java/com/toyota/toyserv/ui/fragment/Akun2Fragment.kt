@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.toyota.toyserv.ui.fragment
 
 import android.app.ProgressDialog
@@ -27,12 +29,6 @@ class Akun2Fragment(_type: String) : Fragment() {
     private lateinit var adapter: AkunAdapter
 
     private lateinit var progressDialog: ProgressDialog
-//    progressDialog = ProgressDialog(this)
-//    progressDialog.setTitle("Loading")
-//    progressDialog.setMessage("Memuat Informasi...")
-//    progressDialog.setCancelable(false)
-//    progressDialog.show()
-//    progressDialog.dismiss()
 
     override fun onDestroy() {
         super.onDestroy()
@@ -51,6 +47,11 @@ class Akun2Fragment(_type: String) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sharedPref = PreferencesHelper(requireActivity())
+        progressDialog = ProgressDialog(requireActivity())
+        progressDialog.setTitle("Loading")
+        progressDialog.setMessage("Memuat Informasi...")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
 
         layoutManager = LinearLayoutManager(requireActivity())
         binding.rv.layoutManager = layoutManager
@@ -69,17 +70,19 @@ class Akun2Fragment(_type: String) : Fragment() {
                 val result = response.body()?.result
 
                 if (response.isSuccessful && value == "1") {
-                    adapter = AkunAdapter(result!!,userType)
+                    adapter = AkunAdapter(result!!, userType)
                     binding.rv.adapter = adapter
                     adapter.notifyDataSetChanged()
                     Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
                 }
+                progressDialog.dismiss()
             }
 
             override fun onFailure(call: Call<DataResponse>, t: Throwable) {
                 Toast.makeText(requireActivity(), t.message.toString(), Toast.LENGTH_SHORT).show()
+                progressDialog.dismiss()
             }
         })
     }

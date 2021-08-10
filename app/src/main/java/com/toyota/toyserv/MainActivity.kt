@@ -122,6 +122,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.tvCardTwo.text = "Akun"
+        binding.imgCardTwo.setImageResource(R.drawable.ic_akun)
         binding.cardTwo.setOnClickListener {
             binding.sheet.visibility = View.VISIBLE
             binding.tvInfo.text = "Akun"
