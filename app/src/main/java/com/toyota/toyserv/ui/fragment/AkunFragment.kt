@@ -40,7 +40,7 @@ class AkunFragment : Fragment() {
         val totalItem = 2
         val viewPagerAdapter = ViewPagerAdapter(
             requireActivity().supportFragmentManager,
-            lifecycle, item, totalItem, ""
+            lifecycle, item, totalItem
         )
         binding.viewPager.adapter = viewPagerAdapter
 

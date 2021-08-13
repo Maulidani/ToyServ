@@ -19,10 +19,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
-class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment(),
-    ServisAdapter.iUserRecycler {
+class Servis2Fragment(_type: String) : Fragment(){
     private val type = _type
-    private val idVehicleOperation = _idVehicleOperation
 
     private var _binding: FragmentServis2Binding? = null
     private val binding get() = _binding!!
@@ -54,13 +52,13 @@ class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment(),
         layoutManager = LinearLayoutManager(requireActivity())
         binding.rv.layoutManager = layoutManager
 
-        servis(type, idVehicleOperation)
+        servis(type)
     }
 
-    private fun servis(type: String, idVehicleOperation: String) {
+    private fun servis(type: String) {
         progressDialog.show()
 
-        ApiClient.instances.service(type, idVehicleOperation)
+        ApiClient.instances.service(type)
             .enqueue(object : Callback<DataResponse> {
                 override fun onResponse(
                     call: Call<DataResponse>,
@@ -71,7 +69,7 @@ class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment(),
 
                     if (response.isSuccessful && value == "1") {
                         Toast.makeText(requireActivity(), "sukses", Toast.LENGTH_SHORT).show()
-                        adapter = ServisAdapter(result!!, this@Servis2Fragment)
+                        adapter = ServisAdapter(result!!)
                         binding.rv.adapter = adapter
                         adapter.notifyDataSetChanged()
 
@@ -92,63 +90,6 @@ class Servis2Fragment(_type: String, _idVehicleOperation: String) : Fragment(),
                     progressDialog.dismiss()
 
                 }
-            })
-    }
-
-    override fun refreshView(idService: String, idUser: String, name: String) {
-        binding.parentAddService.visibility = View.VISIBLE
-
-        binding.tvService.text = name
-        binding.xService.setOnClickListener {
-            binding.parentAddService.visibility = View.INVISIBLE
-
-        }
-        binding.btnAdd.setOnClickListener {
-            val note = binding.inputNote.text.toString()
-
-            requestService(idService, idUser, note)
-        }
-    }
-
-    private fun requestService(idService: String, idUser: String, note: String) {
-        progressDialog.show()
-
-        ApiClient.instances.requestServicePost(
-            "",
-            idService,
-            idUser,
-            note,
-            "",
-            "",
-            "",
-            ""
-        )
-            .enqueue(object : Callback<DataResponse> {
-                override fun onResponse(
-                    call: Call<DataResponse>,
-                    response: Response<DataResponse>
-                ) {
-                    val value = response.body()?.value
-                    val message = response.body()?.message
-
-                    if (response.isSuccessful && value == "1") {
-                        Toast.makeText(requireActivity(), message.toString(), Toast.LENGTH_SHORT)
-                            .show()
-                        binding.parentAddService.visibility = View.INVISIBLE
-                    } else {
-                        Toast.makeText(requireActivity(), message.toString(), Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                    progressDialog.dismiss()
-
-                }
-
-                override fun onFailure(call: Call<DataResponse>, t: Throwable) {
-                    Toast.makeText(requireActivity(), t.message.toString(), Toast.LENGTH_SHORT)
-                        .show()
-                    progressDialog.dismiss()
-                }
-
             })
     }
 }

@@ -64,9 +64,6 @@ interface ApiInterface {
         @Query("type") type: String
     ): Call<DataResponse>
 
-    @GET("vehicle_operation.php")
-    fun vehicleOperation(): Call<DataResponse>
-
     @FormUrlEncoded
     @POST("service_request.php")
     fun requestServicePost(
@@ -86,13 +83,17 @@ interface ApiInterface {
     @GET("service_request.php")
     fun requestServiceGet(
         @Query("type") type: String,
-        @Query("user") user: String
+        @Query("user") user: String,
+        @Query("type_login") typeLogin: String
     ): Call<DataResponse>
 
     @GET("service.php")
     fun service(
-        @Query("type") type: String,
-        @Query("vehicle_operation") vehicleOperation: String
+        @Query("type") type: String
+    ): Call<DataResponse>
+
+    @GET("get_notification.php")
+    fun notification(
     ): Call<DataResponse>
 
 

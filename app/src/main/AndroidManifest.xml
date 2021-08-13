@@ -14,7 +14,12 @@
         android:theme="@style/Theme.ToyServ"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".ui.activity.RegisterCsActivity"></activity>
+        <activity android:name=".ui.activity.NotificationActivity"></activity>
+        <activity android:name=".ui.activity.PermintaanActivity" />
+        <activity android:name=".ui.activity.AkunActivity" />
+        <activity android:name=".ui.activity.ServisSayaActivity" />
+        <activity android:name=".ui.activity.ServisActivity" />
+        <activity android:name=".ui.activity.RegisterCsActivity" />
         <activity android:name=".ui.activity.LoginCsAdminActivity" />
         <activity android:name=".ui.activity.ProfileActivity" />
         <activity android:name=".ui.activity.AboutActivity" />
@@ -38,7 +43,6 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_notification" />
-
     </application>
 
 </manifest>

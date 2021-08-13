@@ -131,7 +131,7 @@
                 android:id="@+id/tvNextServiceInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="12dp"
                 android:text="Service selanjutnya : "
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvCsInfo" />
@@ -143,6 +143,42 @@
                 app:layout_constraintLeft_toRightOf="@+id/tvNextServiceInfo"
                 app:layout_constraintTop_toTopOf="@id/tvNextServiceInfo"
                 tools:text="13 juni 2000" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/jadwalTextField"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:hint="Atur Jadwal"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/tvNextServiceInfo"
+                app:layout_constraintLeft_toRightOf="@+id/tvNextServiceInfo"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvNextServiceInfo">
+
+                <AutoCompleteTextView
+                    android:id="@+id/inputJadwal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:textSize="12sp"
+                    tools:ignore="LabelFor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnJadwalkan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12sp"
+                android:text="Jadwalkan"
+                android:textSize="10sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvNextService" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

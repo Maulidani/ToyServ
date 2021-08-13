@@ -12,11 +12,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.toyota.toyserv.databinding.ActivityMainBinding
 import com.toyota.toyserv.model.DataResponse
 import com.toyota.toyserv.network.ApiClient
-import com.toyota.toyserv.ui.activity.LoginActivity
-import com.toyota.toyserv.ui.fragment.AkunFragment
-import com.toyota.toyserv.ui.fragment.PermintaanServisFragment
-import com.toyota.toyserv.ui.fragment.ServisFragment
-import com.toyota.toyserv.ui.fragment.ServisSayaFragment
+import com.toyota.toyserv.ui.activity.*
+import com.toyota.toyserv.ui.fragment.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,17 +30,13 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
         sharedPref = PreferencesHelper(this)
 
-        binding.sheet.visibility = View.INVISIBLE
-        BottomSheetBehavior.from(binding.sheet).apply {
-            peekHeight = 100
-            this.state = BottomSheetBehavior.STATE_DRAGGING
-        }
-
+        val name = sharedPref.getString(Constant.PREF_IS_LOGIN_NAME)
         val type = sharedPref.getString(Constant.PREF_IS_LOGIN_TYPE)
         val id = sharedPref.getString(Constant.PREF_IS_LOGIN_ID)
 
-        Toast.makeText(this, "id  : ${id.toString()}", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "name  : ${name.toString()}", Toast.LENGTH_SHORT).show()
 
+        binding.tvNameProfile.text = name
         binding.tvTypeName.text = type
 
         when (type) {
@@ -63,6 +56,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             "admin" -> {
+                binding.cardThree.visibility = View.VISIBLE
                 admin()
                 binding.imgLogout.setOnClickListener {
                     sharedPref.logout()
@@ -74,60 +68,44 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.frame, fragment)
-            commit()
-        }
-    }
-
     private fun customer() {
         binding.tvCardOne.text = "Servis"
         binding.cardOne.setOnClickListener {
-            binding.sheet.visibility = View.VISIBLE
-            binding.tvInfo.text = "Servis"
-            loadFragment(ServisFragment())
+            startActivity(Intent(this, ServisActivity::class.java))
         }
 
         binding.tvCardTwo.text = "Servis Saya"
         binding.cardTwo.setOnClickListener {
-            binding.sheet.visibility = View.VISIBLE
-            binding.tvInfo.text = "Servis Saya"
-            loadFragment(ServisSayaFragment())
+            startActivity(Intent(this, ServisSayaActivity::class.java))
         }
     }
 
     private fun customerService() {
+        binding.cardTwo.visibility = View.INVISIBLE
         binding.tvCardOne.text = "Permintaan Servis"
         binding.cardOne.setOnClickListener {
-            binding.sheet.visibility = View.VISIBLE
-            binding.tvInfo.text = "Permintaan Servis"
-            loadFragment(PermintaanServisFragment())
+            startActivity(Intent(this, PermintaanActivity::class.java))
         }
 
-        binding.tvCardTwo.text = "Servis Saya"
-        binding.cardTwo.setOnClickListener {
-            binding.sheet.visibility = View.VISIBLE
-            binding.tvInfo.text = "Servis Saya"
-            loadFragment(ServisSayaFragment())
-        }
     }
 
     private fun admin() {
         binding.tvCardOne.text = "Permintaan Servis"
         binding.cardOne.setOnClickListener {
-            binding.sheet.visibility = View.VISIBLE
-            binding.tvInfo.text = "Permintaan Servis"
-            loadFragment(PermintaanServisFragment())
+            startActivity(Intent(this, PermintaanActivity::class.java))
         }
 
         binding.tvCardTwo.text = "Akun"
         binding.imgCardTwo.setImageResource(R.drawable.ic_akun)
         binding.cardTwo.setOnClickListener {
-            binding.sheet.visibility = View.VISIBLE
-            binding.tvInfo.text = "Akun"
-            loadFragment(AkunFragment())
+            startActivity(Intent(this, AkunActivity::class.java))
         }
+
+        binding.cardThree.setOnClickListener {
+            startActivity(Intent(this, NotificationActivity::class.java))
+        }
+
+
     }
 
     private fun logout(id: String?) {

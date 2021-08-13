@@ -38,26 +38,21 @@ class PermintaanServisFragment : Fragment() {
 
         sharedPref = PreferencesHelper(requireActivity())
 
-        val item = "permintaan_servis"
-        val userType = sharedPref.getString(Constant.PREF_IS_LOGIN_TYPE)
+        val item = "permintaan_servis_all"
 
-        if (userType == "customer_service" || userType == "admin") {
-            val totalItem = 3
-            val viewPagerAdapter = ViewPagerAdapter(
-                requireActivity().supportFragmentManager,
-                lifecycle, item, totalItem, ""
-            )
-            binding.viewPager.adapter = viewPagerAdapter
+        val totalItem = 3
+        val viewPagerAdapter = ViewPagerAdapter(
+            requireActivity().supportFragmentManager,
+            lifecycle, item, totalItem
+        )
+        binding.viewPager.adapter = viewPagerAdapter
 
-            TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-                when (position) {
-                    0 -> tab.text = "Belum Dijadwalkan"
-                    1 -> tab.text = "Sudah Dijadwalkan"
-                    2 -> tab.text = "Selesai"
-                }
-            }.attach()
-
-        }
-
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = "Belum Dijadwalkan"
+                1 -> tab.text = "Sudah Dijadwalkan"
+                2 -> tab.text = "Selesai"
+            }
+        }.attach()
     }
 }

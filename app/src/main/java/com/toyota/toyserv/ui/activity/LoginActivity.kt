@@ -87,8 +87,9 @@ class LoginActivity : AppCompatActivity() {
                     if (response.isSuccessful && value == "1") {
                         val type = response.body()?.type
                         val id = response.body()?.id
+                        val nameLogin = response.body()?.name
 
-                        registerToken(id, type, token)
+                        registerToken(id, type, token, nameLogin)
                         Toast.makeText(this@LoginActivity, message, Toast.LENGTH_SHORT)
                             .show()
                     } else {
@@ -109,17 +110,22 @@ class LoginActivity : AppCompatActivity() {
             })
     }
 
-    private fun saveSession(id: String?, type: String?) {
+    private fun saveSession(id: String?, type: String?, nameLogin: String?) {
 
         sharedPref.put(Constant.PREF_IS_LOGIN_ID, id.toString())
         sharedPref.put(Constant.PREF_IS_LOGIN_TYPE, type.toString())
+        sharedPref.put(Constant.PREF_IS_LOGIN_NAME, nameLogin.toString())
         sharedPref.put(Constant.PREF_IS_LOGIN, true)
         startActivity(Intent(this, MainActivity::class.java))
         finish()
         progressDialog.dismiss()
+
+        val name: String? = sharedPref.getString(Constant.PREF_IS_LOGIN_NAME)
+
+        Toast.makeText(this, "name  : ${name.toString()}", Toast.LENGTH_SHORT).show()
     }
 
-    private fun registerToken(id: String?, type: String?, token: String) {
+    private fun registerToken(id: String?, type: String?, token: String, nameLogin: String?) {
         ApiClient.instances.registerToken(id.toString(), token)
             .enqueue(object : Callback<DataResponse> {
                 override fun onResponse(
@@ -132,7 +138,7 @@ class LoginActivity : AppCompatActivity() {
                     if (token != null) {
                         if (response.isSuccessful && value == "1") {
 
-                            saveSession(id, type)
+                            saveSession(id, type, nameLogin)
 
                             Toast.makeText(this@LoginActivity, message, Toast.LENGTH_SHORT)
                                 .show()

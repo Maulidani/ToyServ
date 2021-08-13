@@ -78,7 +78,9 @@ class LoginCsAdminActivity : AppCompatActivity() {
                     if (response.isSuccessful && value == "1") {
                         val type = response.body()?.type
                         val id = response.body()?.id
-                        saveSession(id, type)
+                        val name = response.body()?.name
+
+                        saveSession(id, type, name)
                         Toast.makeText(this@LoginCsAdminActivity, message, Toast.LENGTH_SHORT)
                             .show()
                     } else {
@@ -99,8 +101,9 @@ class LoginCsAdminActivity : AppCompatActivity() {
             })
     }
 
-    private fun saveSession(id: String?, type: String?) {
+    private fun saveSession(id: String?, type: String?, name: String?) {
 
+        sharedPref.put(Constant.PREF_IS_LOGIN_NAME, name.toString())
         sharedPref.put(Constant.PREF_IS_LOGIN_ID, id.toString())
         sharedPref.put(Constant.PREF_IS_LOGIN_TYPE, type.toString())
         sharedPref.put(Constant.PREF_IS_LOGIN, true)

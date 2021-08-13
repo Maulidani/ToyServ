@@ -17,11 +17,11 @@ import retrofit2.Response
 
 class ServisBelumDijadwalkanAdapter(
     private val belumDijadwalkanList: ArrayList<DataResult>,
-    private val mListener: ServisBelumDijadwalkanAdapter.iUserRecycler
+    private val mListener: iUserRecycler
 //    _all: String
 ) :
     RecyclerView.Adapter<ServisBelumDijadwalkanAdapter.ListViewHolder>() {
-//    val all = _all
+    //    val all = _all
     private lateinit var sharedPref: PreferencesHelper
 
     inner class ListViewHolder(private val binding: ItemBelumDijadwalkanServisBinding) :
@@ -39,12 +39,20 @@ class ServisBelumDijadwalkanAdapter(
 
             if (userType == "customer_service") {
 //                if (all != "all") {
-                    binding.btnJadwalkan.visibility = View.VISIBLE
-                    binding.btnJadwalkan.setOnClickListener {
+                binding.btnJadwalkan.visibility = View.VISIBLE
+                binding.btnJadwalkan.setOnClickListener {
 //                        jadwalkan(it, idService, idCs!!, serviceAt)
-                        mListener.refreshView(idService, idCs!!, dataList.service_name, dataList.type_service, dataList.vehicle, dataList.user_name, dataList.note)
+                    mListener.refreshView(
+                        idService,
+                        idCs!!,
+                        dataList.service_name,
+                        dataList.type_service,
+                        dataList.vehicle,
+                        dataList.user_name,
+                        dataList.note
+                    )
 
-                    }
+                }
 //                }
             }
             binding.tvServiceName.text = dataList.service_name

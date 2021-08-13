@@ -17,7 +17,6 @@ import retrofit2.Response
 
 class ServisAdapter(
     private val servisList: ArrayList<DataResult>,
-    private val mListener: iUserRecycler
 
 ) :
     RecyclerView.Adapter<ServisAdapter.ListViewHolder>() {
@@ -34,8 +33,8 @@ class ServisAdapter(
             binding.tvDescription.text = dataList.description
 
             binding.btnRequestServis.setOnClickListener {
-//                requestService(it,dataList.id,idUser!!)
-                mListener.refreshView(dataList.id, idUser!!, dataList.name)
+                requestService(it, dataList.id, idUser!!)
+
             }
         }
     }
@@ -88,5 +87,4 @@ class ServisAdapter(
 
             })
     }
-
 }

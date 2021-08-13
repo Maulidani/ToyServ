@@ -1,9 +1,12 @@
 package com.toyota.toyserv.adapter
 
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import apotekku.projectapotekku.utils.Constant
 import apotekku.projectapotekku.utils.PreferencesHelper
@@ -14,36 +17,32 @@ import com.toyota.toyserv.network.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ServisSudahDijadwalkanAdapter(
     private val sudahDijadwalkanList: ArrayList<DataResult>,
-    _all: String
 ) :
     RecyclerView.Adapter<ServisSudahDijadwalkanAdapter.ListViewHolder>() {
+    private lateinit var datePickerDialog: DatePickerDialog
 
-    val all = _all
     private lateinit var sharedPref: PreferencesHelper
+    var fdate: String? = null
 
     inner class ListViewHolder(private val binding: ItemSudahDijadwalkanServisBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(dataList: DataResult) {
             sharedPref = PreferencesHelper(itemView.context)
+            val typeAkun = sharedPref.getString(Constant.PREF_IS_LOGIN_TYPE)
+            if (typeAkun == "customer_service") {
+                binding.btnSelesai.visibility = View.VISIBLE
 
-            val idService = dataList.id
-
-            val userType = sharedPref.getString(Constant.PREF_IS_LOGIN_TYPE)
-
-            if (userType == "customer_service") {
-                if (all != "all") {
-                    binding.btnSelesai.visibility = View.VISIBLE
-
-                    binding.btnSelesai.setOnClickListener {
-                        selesaikan(it, idService, "2018-08-08", "2018-08-08")
-                    }
+                binding.btnSelesai.setOnClickListener {
+                    selesaikan(it, dataList.id)
                 }
             }
-
             binding.tvServiceName.text = dataList.service_name
             binding.tvServiceType.text = dataList.type_service
             binding.tvVechile.text = dataList.vehicle
@@ -69,8 +68,8 @@ class ServisSudahDijadwalkanAdapter(
 
     override fun getItemCount(): Int = sudahDijadwalkanList.size
 
-    private fun selesaikan(view: View, idService: String, finishAt: String, nextAt: String) {
-        ApiClient.instances.requestServicePost(idService, "", "", "", "", "", finishAt, nextAt)
+    private fun selesaikan(view: View, idService: String) {
+        ApiClient.instances.requestServicePost(idService, "", "", "", "", "", "selesai", "")
             .enqueue(object : Callback<DataResponse> {
                 override fun onResponse(
                     call: Call<DataResponse>,
@@ -92,4 +91,5 @@ class ServisSudahDijadwalkanAdapter(
 
             })
     }
+
 }
