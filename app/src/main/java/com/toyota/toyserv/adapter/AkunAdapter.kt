@@ -19,7 +19,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AkunAdapter(private val accountList: ArrayList<DataResult>, userType: String) :
+class AkunAdapter(
+    private val accountList: ArrayList<DataResult>,
+    userType: String,
+    private val mListener: iUserRecycler
+) :
     RecyclerView.Adapter<AkunAdapter.ListViewHolder>() {
     private lateinit var sharedPref: PreferencesHelper
     val type = userType
@@ -123,6 +127,7 @@ class AkunAdapter(private val accountList: ArrayList<DataResult>, userType: Stri
                 if (response.isSuccessful && value == "1") {
 
                     Toast.makeText(itemView.context, message, Toast.LENGTH_SHORT).show()
+                    mListener.refreshView()
                 } else {
                     Toast.makeText(itemView.context, message, Toast.LENGTH_SHORT).show()
                 }
@@ -132,5 +137,9 @@ class AkunAdapter(private val accountList: ArrayList<DataResult>, userType: Stri
                 Toast.makeText(itemView.context, t.message.toString(), Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    interface iUserRecycler {
+        fun refreshView()
     }
 }

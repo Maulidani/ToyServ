@@ -17,6 +17,14 @@ class ServisSayaActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         loadFragment(ServisSayaFragment())
+        supportActionBar?.title = "Servis Saya"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     private fun loadFragment(fragment: Fragment) {

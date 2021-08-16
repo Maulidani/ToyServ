@@ -59,7 +59,7 @@ class NotifFragment : Fragment() {
                 val result = response.body()?.result
 
                 if (response.isSuccessful && value == "1") {
-                    Toast.makeText(requireActivity(), "sukses", Toast.LENGTH_SHORT).show()
+
                     adapter = NotifAdapter(result!!)
                     binding.rv.adapter = adapter
                     adapter.notifyDataSetChanged()

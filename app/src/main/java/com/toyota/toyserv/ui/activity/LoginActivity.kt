@@ -90,10 +90,13 @@ class LoginActivity : AppCompatActivity() {
                         val nameLogin = response.body()?.name
 
                         registerToken(id, type, token, nameLogin)
-                        Toast.makeText(this@LoginActivity, message, Toast.LENGTH_SHORT)
-                            .show()
+
                     } else {
-                        Toast.makeText(this@LoginActivity, message, Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "username/password salah",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                         progressDialog.dismiss()
                     }
@@ -119,10 +122,6 @@ class LoginActivity : AppCompatActivity() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
         progressDialog.dismiss()
-
-        val name: String? = sharedPref.getString(Constant.PREF_IS_LOGIN_NAME)
-
-        Toast.makeText(this, "name  : ${name.toString()}", Toast.LENGTH_SHORT).show()
     }
 
     private fun registerToken(id: String?, type: String?, token: String, nameLogin: String?) {
@@ -184,7 +183,7 @@ class LoginActivity : AppCompatActivity() {
             // Create the NotificationChannel
             val name = "Channel_Name"
             val descriptionText = "Channel_Description"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val importance = NotificationManager.IMPORTANCE_HIGH
             val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
             mChannel.description = descriptionText
             // Register the channel with the system; you can't change the importance
@@ -199,7 +198,6 @@ class LoginActivity : AppCompatActivity() {
         if (sharedPref.getBoolean(Constant.PREF_IS_LOGIN)) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
-        } else {
         }
     }
 }

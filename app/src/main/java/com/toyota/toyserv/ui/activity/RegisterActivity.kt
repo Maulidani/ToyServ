@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.toyota.toyserv.ui.activity
 
 import android.app.ProgressDialog
@@ -36,6 +38,10 @@ class RegisterActivity : AppCompatActivity() {
         val intentData = intent.getBooleanExtra("intent", false)
 
         if (intentData) {
+            supportActionBar?.show()
+            supportActionBar?.title = "Edit Akun Customer"
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
             binding.inputFullname.setText(intentFullName)
             binding.inputVehicle.setText(intentVehicle)
             binding.inputPoliceNumber.setText(intentPoliceNumber)
@@ -126,6 +132,7 @@ class RegisterActivity : AppCompatActivity() {
                 if (response.isSuccessful && value == "1") {
 
                     Toast.makeText(this@RegisterActivity, message, Toast.LENGTH_SHORT).show()
+                    finish()
                 } else {
                     Toast.makeText(this@RegisterActivity, message, Toast.LENGTH_SHORT).show()
                 }
@@ -175,6 +182,7 @@ class RegisterActivity : AppCompatActivity() {
                     if (response.isSuccessful && value == "1") {
 
                         Toast.makeText(this@RegisterActivity, message, Toast.LENGTH_SHORT).show()
+                        finish()
                     } else {
                         Toast.makeText(this@RegisterActivity, message, Toast.LENGTH_SHORT).show()
                     }
@@ -189,5 +197,10 @@ class RegisterActivity : AppCompatActivity() {
                     progressDialog.dismiss()
                 }
             })
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

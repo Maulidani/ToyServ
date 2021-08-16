@@ -16,6 +16,15 @@ class ServisActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         loadFragment(ServisFragment())
+
+        supportActionBar?.title = "Servis"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     private fun loadFragment(fragment: Fragment) {

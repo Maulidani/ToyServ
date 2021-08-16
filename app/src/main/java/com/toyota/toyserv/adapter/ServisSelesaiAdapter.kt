@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import apotekku.projectapotekku.utils.Constant
 import apotekku.projectapotekku.utils.PreferencesHelper
+import com.toyota.toyserv.R
 import com.toyota.toyserv.databinding.ItemFinishServiceBinding
 import com.toyota.toyserv.model.DataResponse
 import com.toyota.toyserv.model.DataResult
@@ -22,6 +23,7 @@ import kotlin.collections.ArrayList
 
 class ServisSelesaiAdapter(
     private val selesaiDijadwalkanList: ArrayList<DataResult>,
+    private val mListener: iUserRecycler
 ) :
     RecyclerView.Adapter<ServisSelesaiAdapter.ListViewHolder>() {
     private lateinit var sharedPref: PreferencesHelper
@@ -36,7 +38,7 @@ class ServisSelesaiAdapter(
             setDateTimeField(itemView)
             sharedPref = PreferencesHelper(itemView.context)
             val typeAkun = sharedPref.getString(Constant.PREF_IS_LOGIN_TYPE)
-            val idAkun = sharedPref.getString(Constant.PREF_IS_LOGIN_ID)
+            val idCs = sharedPref.getString(Constant.PREF_IS_LOGIN_ID)
             if (typeAkun == "customer_service") {
 
                 if (dataList.next_at == "false") {
@@ -46,34 +48,18 @@ class ServisSelesaiAdapter(
                 }
 
                 binding.btnJadwalkan.setOnClickListener {
-
-                    if (fdate.isNullOrEmpty()) {
-                        datePickerDialog.show()
-                        binding.btnJadwalkan.text = "Kirim"
-
-                    } else {
-
-                        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-                        val awal = SimpleDateFormat("dd MMMM yyyy")
-
-                        val date: Date? = awal.parse(fdate.toString())
-                        val tanggalConversi: String = simpleDateFormat.format(date!!)
-
-                        if (binding.btnJadwalkan.text == "Kirim") {
-                            jadwalkanNext(
-                                it,
-                                dataList.id_service,
-                                dataList.id_user,
-                                idAkun!!,
-                                tanggalConversi,
-                                dataList.id
-                            )
-                        } else {
-                            binding.btnJadwalkan.text = "Jadwalkan"
-                        }
-
-                        fdate = null
-                    }
+                    mListener.refreshView(
+                        dataList.id,
+                        idCs!!,
+                        dataList.service_name,
+                        dataList.type_service,
+                        dataList.vehicle,
+                        dataList.user_name,
+                        dataList.note,
+                        dataList.id_service,
+                        dataList.id_user,
+                        dataList.month
+                    )
                 }
 
             }
@@ -84,8 +70,23 @@ class ServisSelesaiAdapter(
             binding.tvPemilik.text = dataList.user_name
             binding.tvCs.text = dataList.cs_name
             binding.tvServicedAt.text = dataList.finish_at
-            binding.tvNextService.text = dataList.next_at
+            if (dataList.next_at == "false") {
+                binding.tvNextService.text = "Belum dijadwalkan"
+            } else {
+                binding.tvNextService.text = dataList.next_at
+            }
 
+            if (dataList.expendable) {
+                binding.parentDetails.visibility = View.VISIBLE
+                binding.icDetails.setImageResource(R.drawable.ic_up)
+            } else {
+                binding.parentDetails.visibility = View.GONE
+                binding.icDetails.setImageResource(R.drawable.ic_down)
+            }
+            binding.parentNameList.setOnClickListener {
+                dataList.expendable = !dataList.expendable
+                notifyDataSetChanged()
+            }
         }
 
         @SuppressLint("SimpleDateFormat")
@@ -123,48 +124,18 @@ class ServisSelesaiAdapter(
 
     override fun getItemCount(): Int = selesaiDijadwalkanList.size
 
-    private fun jadwalkanNext(
-        view: View,
-        idService: String,
-        idUser: String,
-        idCs: String,
-        date: String,
-        id: String
-    ) {
-        ApiClient.instances.requestServicePost(
-            id,
-            idService,
-            idUser,
-            "next",
-            idCs,
-            date,
-            "",
-            ""
+    interface iUserRecycler {
+        fun refreshView(
+            id: String,
+            idCs: String,
+            serviceName: String,
+            typeService: String,
+            vehicle: String,
+            userName: String,
+            note: String,
+            idService: String,
+            idUser: String,
+            month: String
         )
-            .enqueue(object : Callback<DataResponse> {
-                override fun onResponse(
-                    call: Call<DataResponse>,
-                    response: Response<DataResponse>
-                ) {
-
-                    val value = response.body()?.value
-                    val message = response.body()?.message
-
-                    if (response.isSuccessful && value == "1") {
-                        Toast.makeText(view.context, message.toString(), Toast.LENGTH_SHORT)
-                            .show()
-                    } else {
-                        Toast.makeText(view.context, message.toString(), Toast.LENGTH_SHORT)
-                            .show()
-                    }
-
-                }
-
-                override fun onFailure(call: Call<DataResponse>, t: Throwable) {
-                    Toast.makeText(view.context, t.message.toString(), Toast.LENGTH_SHORT)
-                        .show()
-                }
-
-            })
     }
 }

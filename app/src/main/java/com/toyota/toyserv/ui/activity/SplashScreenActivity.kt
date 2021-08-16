@@ -35,19 +35,5 @@ class SplashScreenActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.splashscreen_fade_in, R.anim.splashscreen_fade_out)
             finish()
         }
-
-        getDate()
-    }
-
-
-    private lateinit var dateTime: Date
-    private lateinit var dateFormat: DateFormat
-
-    @SuppressLint("SimpleDateFormat")
-    private fun getDate() {
-        dateTime = Date()
-        dateFormat = SimpleDateFormat("yyyy-MM-dd")
-
-        Log.e("getDate: ", dateFormat.format(dateTime).toString())
     }
 }

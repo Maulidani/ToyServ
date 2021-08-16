@@ -18,6 +18,5 @@ class ProfileActivity : AppCompatActivity() {
 //        val view = bindingCustomer.root
         setContentView(view)
 
-
     }
 }

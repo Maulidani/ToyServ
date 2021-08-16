@@ -22,7 +22,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class Akun2Fragment(_type: String) : Fragment() {
+class Akun2Fragment(_type: String) : Fragment(), AkunAdapter.iUserRecycler {
     private lateinit var sharedPref: PreferencesHelper
     val type = _type
     private var _binding: FragmentAkun2Binding? = null
@@ -81,10 +81,9 @@ class Akun2Fragment(_type: String) : Fragment() {
                 val result = response.body()?.result
 
                 if (response.isSuccessful && value == "1") {
-                    adapter = AkunAdapter(result!!, userType)
+                    adapter = AkunAdapter(result!!, userType,this@Akun2Fragment)
                     binding.rv.adapter = adapter
                     adapter.notifyDataSetChanged()
-                    Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
                 }
@@ -96,5 +95,15 @@ class Akun2Fragment(_type: String) : Fragment() {
                 progressDialog.dismiss()
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getAkun(type)
+
+    }
+
+    override fun refreshView() {
+        getAkun(type)
     }
 }

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import apotekku.projectapotekku.utils.Constant
 import apotekku.projectapotekku.utils.PreferencesHelper
+import com.toyota.toyserv.R
 import com.toyota.toyserv.databinding.ItemSudahDijadwalkanServisBinding
 import com.toyota.toyserv.model.DataResponse
 import com.toyota.toyserv.model.DataResult
@@ -23,12 +24,12 @@ import kotlin.collections.ArrayList
 
 class ServisSudahDijadwalkanAdapter(
     private val sudahDijadwalkanList: ArrayList<DataResult>,
+    private val mListener: iUserRecycler
+
 ) :
     RecyclerView.Adapter<ServisSudahDijadwalkanAdapter.ListViewHolder>() {
-    private lateinit var datePickerDialog: DatePickerDialog
 
     private lateinit var sharedPref: PreferencesHelper
-    var fdate: String? = null
 
     inner class ListViewHolder(private val binding: ItemSudahDijadwalkanServisBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -49,6 +50,18 @@ class ServisSudahDijadwalkanAdapter(
             binding.tvPemilik.text = dataList.user_name
             binding.tvCs.text = dataList.cs_name
             binding.tvServiceAt.text = dataList.service_at
+
+            if (dataList.expendable) {
+                binding.parentDetails.visibility = View.VISIBLE
+                binding.icDetails.setImageResource(R.drawable.ic_up)
+            } else {
+                binding.parentDetails.visibility = View.GONE
+                binding.icDetails.setImageResource(R.drawable.ic_down)
+            }
+            binding.parentNameList.setOnClickListener {
+                dataList.expendable = !dataList.expendable
+                notifyDataSetChanged()
+            }
         }
     }
 
@@ -80,6 +93,7 @@ class ServisSudahDijadwalkanAdapter(
 
                     if (response.isSuccessful && value == "1") {
                         Toast.makeText(view.context, message.toString(), Toast.LENGTH_SHORT).show()
+                        mListener.refreshView()
                     } else {
                         Toast.makeText(view.context, message.toString(), Toast.LENGTH_SHORT).show()
                     }
@@ -91,5 +105,11 @@ class ServisSudahDijadwalkanAdapter(
 
             })
     }
+
+    interface iUserRecycler {
+        fun refreshView(
+        )
+    }
+
 
 }

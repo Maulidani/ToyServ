@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import apotekku.projectapotekku.utils.Constant
 import apotekku.projectapotekku.utils.PreferencesHelper
+import com.toyota.toyserv.R
 import com.toyota.toyserv.network.ApiClient
 import com.toyota.toyserv.databinding.ItemServiceBinding
 import com.toyota.toyserv.model.DataResponse
@@ -18,7 +19,7 @@ import retrofit2.Response
 class ServisAdapter(
     private val servisList: ArrayList<DataResult>,
 
-) :
+    ) :
     RecyclerView.Adapter<ServisAdapter.ListViewHolder>() {
     private lateinit var sharedPref: PreferencesHelper
 
@@ -34,7 +35,19 @@ class ServisAdapter(
 
             binding.btnRequestServis.setOnClickListener {
                 requestService(it, dataList.id, idUser!!)
+            }
 
+            if (dataList.expendable) {
+                binding.parentDetails.visibility = View.VISIBLE
+                binding.icDetails.setImageResource(R.drawable.ic_up)
+            } else {
+                binding.parentDetails.visibility = View.GONE
+                binding.icDetails.setImageResource(R.drawable.ic_down)
+            }
+
+            binding.parentNameList.setOnClickListener {
+                dataList.expendable = !dataList.expendable
+                notifyDataSetChanged()
             }
         }
     }
@@ -51,16 +64,12 @@ class ServisAdapter(
 
     override fun getItemCount(): Int = servisList.size
 
-    interface iUserRecycler {
-        fun refreshView(idService: String, idUser: String, name: String)
-    }
-
     private fun requestService(view: View, name: String, idUser: String) {
         ApiClient.instances.requestServicePost(
             "",
             name,
             idUser,
-            "perbaiki dulu kanda",
+            "",
             "",
             "",
             "",

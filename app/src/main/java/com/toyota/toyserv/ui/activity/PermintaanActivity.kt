@@ -16,9 +16,16 @@ class PermintaanActivity : AppCompatActivity() {
         binding = ActivityPermintaanBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
         loadFragment(PermintaanServisFragment())
+
+        supportActionBar?.title = "Permintaan Servis"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
 
     private fun loadFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {

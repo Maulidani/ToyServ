@@ -24,7 +24,8 @@ import retrofit2.Response
 import java.util.*
 
 class ServisSaya2Fragment(_type: String) : Fragment(),
-    ServisBelumDijadwalkanAdapter.iUserRecycler {
+    ServisBelumDijadwalkanAdapter.iUserRecycler, ServisSelesaiAdapter.iUserRecycler,
+    ServisSudahDijadwalkanAdapter.iUserRecycler {
     private val type = _type
 
     private var _binding: FragmentServisSaya2Binding? = null
@@ -71,7 +72,7 @@ class ServisSaya2Fragment(_type: String) : Fragment(),
     }
 
     private fun servis(type: String, idAkun: String) {
-        ApiClient.instances.requestServiceGet(type, idAkun,"")
+        ApiClient.instances.requestServiceGet(type, idAkun, "")
             .enqueue(object : Callback<DataResponse> {
                 override fun onResponse(
                     call: Call<DataResponse>,
@@ -81,24 +82,27 @@ class ServisSaya2Fragment(_type: String) : Fragment(),
                     val result = response.body()?.result
 
                     if (response.isSuccessful && value == "1") {
-                        Toast.makeText(requireActivity(), "sukses", Toast.LENGTH_SHORT).show()
 
                         when (type) {
 
                             "belum_dijadwalkan" -> {
                                 adapter = ServisBelumDijadwalkanAdapter(
-                                    result!!,this@ServisSaya2Fragment)
+                                    result!!, this@ServisSaya2Fragment
+                                )
                                 binding.rv.adapter = adapter
                                 adapter.notifyDataSetChanged()
 
                             }
                             "sudah_dijadwalkan" -> {
-                                adapter2 = ServisSudahDijadwalkanAdapter(result!!)
+                                adapter2 = ServisSudahDijadwalkanAdapter(
+                                    result!!,
+                                    this@ServisSaya2Fragment
+                                )
                                 binding.rv.adapter = adapter2
                                 adapter2.notifyDataSetChanged()
                             }
                             "selesai" -> {
-                                adapter3 = ServisSelesaiAdapter(result!!)
+                                adapter3 = ServisSelesaiAdapter(result!!, this@ServisSaya2Fragment)
                                 binding.rv.adapter = adapter3
                                 adapter3.notifyDataSetChanged()
                             }
@@ -133,7 +137,27 @@ class ServisSaya2Fragment(_type: String) : Fragment(),
         userName: String,
         note: String
     ) {
+        //belum fijadwalkan
+    }
 
+    override fun refreshView(
+        id: String,
+        idCs: String,
+        serviceName: String,
+        typeService: String,
+        vehicle: String,
+        userName: String,
+        note: String,
+        idService: String,
+        idUser: String,
+        month: String
+    ) {
+        //selesai
+        //Jadwalkan ulang
+    }
+
+    override fun refreshView() {
+        //sudah dijadwalkan
     }
 
 }

@@ -17,6 +17,12 @@ class NotificationActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         loadFragment(NotifFragment())
+        supportActionBar?.title = "Notifikasi"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     private fun loadFragment(fragment: Fragment) {

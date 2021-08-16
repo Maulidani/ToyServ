@@ -46,6 +46,7 @@
             android:id="@+id/parentDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:background="@color/white"
             android:paddingHorizontal="24dp"
             android:paddingVertical="24dp">

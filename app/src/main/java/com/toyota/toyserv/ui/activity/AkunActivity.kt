@@ -17,6 +17,12 @@ class AkunActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         loadFragment(AkunFragment())
+        supportActionBar?.title = "Akun"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     private fun loadFragment(fragment: Fragment) {

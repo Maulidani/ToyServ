@@ -81,10 +81,12 @@ class LoginCsAdminActivity : AppCompatActivity() {
                         val name = response.body()?.name
 
                         saveSession(id, type, name)
-                        Toast.makeText(this@LoginCsAdminActivity, message, Toast.LENGTH_SHORT)
-                            .show()
                     } else {
-                        Toast.makeText(this@LoginCsAdminActivity, message, Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            this@LoginCsAdminActivity,
+                            "username/password salah",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                     }
                     progressDialog.dismiss()

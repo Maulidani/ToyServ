@@ -32,10 +32,13 @@ class RegisterCsActivity : AppCompatActivity() {
         val intentFullName = intent.getStringExtra("full_name")
         val intentUsername = intent.getStringExtra("username")
         val intentPassword = intent.getStringExtra("password")
-
         val intentData = intent.getBooleanExtra("intent", false)
 
         if (intentData) {
+            supportActionBar?.show()
+            supportActionBar?.title = "Edit Akun CS"
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
             binding.inputFullname.setText(intentFullName)
             binding.inputUsername.setText(intentUsername)
             binding.inputPassword.setText(intentPassword)
@@ -63,16 +66,17 @@ class RegisterCsActivity : AppCompatActivity() {
                             intentId, fullName, username, password,
                             "customer_service"
                         )
+                    } else {
+                        register(
+                            fullName,
+                            "",
+                            "",
+                            "",
+                            username,
+                            password,
+                            "customer_service"
+                        )
                     }
-                    register(
-                        fullName,
-                        "",
-                        "",
-                        "",
-                        username,
-                        password,
-                        "customer_service"
-                    )
                 }
             }
         }
@@ -106,6 +110,7 @@ class RegisterCsActivity : AppCompatActivity() {
                 if (response.isSuccessful && value == "1") {
 
                     Toast.makeText(this@RegisterCsActivity, message, Toast.LENGTH_SHORT).show()
+                    finish()
                 } else {
                     Toast.makeText(this@RegisterCsActivity, message, Toast.LENGTH_SHORT).show()
                 }
@@ -144,6 +149,7 @@ class RegisterCsActivity : AppCompatActivity() {
 
                             Toast.makeText(this@RegisterCsActivity, message, Toast.LENGTH_SHORT)
                                 .show()
+                            finish()
                         } else {
                             Toast.makeText(this@RegisterCsActivity, message, Toast.LENGTH_SHORT)
                                 .show()
@@ -163,5 +169,10 @@ class RegisterCsActivity : AppCompatActivity() {
                         progressDialog.dismiss()
                     }
                 })
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

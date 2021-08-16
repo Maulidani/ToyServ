@@ -83,27 +83,16 @@
                 app:layout_constraintTop_toBottomOf="@id/passwordTextField" />
 
             <TextView
-                android:id="@+id/tvRegister"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="24dp"
-                android:gravity="center"
-                android:text="Belum punya akun ?. Daftar disini"
-                android:textSize="12sp"
-                app:layout_constraintTop_toBottomOf="@id/btnLogin" />
-
-            <TextView
                 android:id="@+id/tvLoginCsAdmin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="24dp"
                 android:gravity="center"
-                android:text="Atau login sebagai CS/Admin"
+                android:text="klik disini untuk login sebagai CS/Admin"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvRegister" />
+                app:layout_constraintTop_toBottomOf="@id/btnLogin" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.toyota.toyserv.ui.fragment
 
 import android.annotation.SuppressLint
@@ -25,7 +27,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PermintaanServis2Fragment(_type: String) : Fragment(),
-    ServisBelumDijadwalkanAdapter.iUserRecycler {
+    ServisBelumDijadwalkanAdapter.iUserRecycler, ServisSelesaiAdapter.iUserRecycler,
+    ServisSudahDijadwalkanAdapter.iUserRecycler {
     private val type = _type
 
     private var _binding: FragmentPermintaanServis2Binding? = null
@@ -40,6 +43,9 @@ class PermintaanServis2Fragment(_type: String) : Fragment(),
 
     private lateinit var sharedPref: PreferencesHelper
     private lateinit var datePickerDialog: DatePickerDialog
+
+    private lateinit var typeAkun: String
+    private lateinit var idAkun: String
 
     override fun onDestroy() {
         super.onDestroy()
@@ -57,8 +63,8 @@ class PermintaanServis2Fragment(_type: String) : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sharedPref = PreferencesHelper(requireActivity())
-        val idAkun = sharedPref.getString(Constant.PREF_IS_LOGIN_ID)
-        val typeAkun = sharedPref.getString(Constant.PREF_IS_LOGIN_TYPE)
+        idAkun = sharedPref.getString(Constant.PREF_IS_LOGIN_ID).toString()
+        typeAkun = sharedPref.getString(Constant.PREF_IS_LOGIN_TYPE).toString()
 
         progressDialog = ProgressDialog(requireActivity())
         progressDialog.setTitle("Loading")
@@ -68,16 +74,17 @@ class PermintaanServis2Fragment(_type: String) : Fragment(),
         layoutManager = LinearLayoutManager(requireActivity())
         binding.rv.layoutManager = layoutManager
 
-
-        if (typeAkun == "admin"){
-            servisSemua(type,"", "all")
+        if (typeAkun == "admin") {
+            servisSemua(type, "", "all")
         } else {
-            servisSemua(type, idAkun!!, "cs")
+            servisSemua(type, idAkun, "cs")
         }
     }
 
     private fun servisSemua(type: String, idAkun: String, typeLogin: String) {
-        ApiClient.instances.requestServiceGet(type, idAkun,typeLogin)
+        progressDialog.show()
+
+        ApiClient.instances.requestServiceGet(type, idAkun, typeLogin)
             .enqueue(object : Callback<DataResponse> {
                 override fun onResponse(
                     call: Call<DataResponse>,
@@ -87,7 +94,6 @@ class PermintaanServis2Fragment(_type: String) : Fragment(),
                     val result = response.body()?.result
 
                     if (response.isSuccessful && value == "1") {
-                        Toast.makeText(requireActivity(), "sukses", Toast.LENGTH_SHORT).show()
 
                         when (type) {
 
@@ -101,13 +107,14 @@ class PermintaanServis2Fragment(_type: String) : Fragment(),
 
                             }
                             "sudah_dijadwalkan" -> {
-                                adapter2 = ServisSudahDijadwalkanAdapter(result!!)
+                                adapter2 = ServisSudahDijadwalkanAdapter(result!!,this@PermintaanServis2Fragment)
                                 binding.rv.adapter = adapter2
                                 adapter2.notifyDataSetChanged()
 
                             }
                             "selesai" -> {
-                                adapter3 = ServisSelesaiAdapter(result!!)
+                                adapter3 =
+                                    ServisSelesaiAdapter(result!!, this@PermintaanServis2Fragment)
                                 binding.rv.adapter = adapter3
                                 adapter3.notifyDataSetChanged()
                             }
@@ -147,7 +154,7 @@ class PermintaanServis2Fragment(_type: String) : Fragment(),
 
         binding.parentJadwalkan.visibility = View.VISIBLE
 
-        setDateTimeField()
+        setDateTimeField("jadwalkan")
         binding.xJadwalkan.setOnClickListener {
             binding.parentJadwalkan.visibility = View.INVISIBLE
         }
@@ -156,25 +163,32 @@ class PermintaanServis2Fragment(_type: String) : Fragment(),
         binding.tvServiceType.text = typeService
         binding.tvVechile.text = vehicle
         binding.tvPemilik.text = userName
-        binding.tvNote.text = note
 
         binding.inputJadwal.setOnClickListener {
             datePickerDialog.show()
         }
         binding.btnJadwalkan.setOnClickListener {
 
-            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-            val awal = SimpleDateFormat("dd MMMM yyyy")
+            if (!binding.inputJadwal.text.toString().isEmpty()) {
+                val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                val awal = SimpleDateFormat("dd MMMM yyyy")
 
-            val date: Date? = awal.parse(binding.inputJadwal.text.toString())
-            val tanggalConversi: String = simpleDateFormat.format(date!!)
+                val date: Date? = awal.parse(binding.inputJadwal.text.toString())
+                val tanggalConversi: String = simpleDateFormat.format(date!!)
 
-            jadwalkan(idService, idCs, tanggalConversi)
+                jadwalkan(idService, idCs, tanggalConversi)
+            } else {
+                Toast.makeText(
+                    requireActivity(),
+                    "Pilih jadwal terlebih dahulu",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun setDateTimeField() {
+    private fun setDateTimeField(s: String) {
         val newCalendar = Calendar.getInstance()
         datePickerDialog = DatePickerDialog(
             requireActivity(),
@@ -184,20 +198,25 @@ class PermintaanServis2Fragment(_type: String) : Fragment(),
                 val sd = SimpleDateFormat("dd MMMM yyyy")
                 val startDate = newDate.time
                 val fdate = sd.format(startDate)
-                binding.inputJadwal.setText(fdate)
+
+                if (s == "next") {
+                    binding.inputJadwalNext.setText(fdate)
+                } else {
+                    binding.inputJadwal.setText(fdate)
+                }
             }, newCalendar[Calendar.YEAR], newCalendar[Calendar.MONTH],
             newCalendar[Calendar.DAY_OF_MONTH]
         )
     }
 
     private fun jadwalkan(idService: String, cs: String, serviceAt: String) {
+        progressDialog.show()
         ApiClient.instances.requestServicePost(idService, "", "", "", cs, serviceAt, "", "")
             .enqueue(object : Callback<DataResponse> {
                 override fun onResponse(
                     call: Call<DataResponse>,
                     response: Response<DataResponse>
                 ) {
-                    progressDialog.show()
 
                     val value = response.body()?.value
                     val message = response.body()?.message
@@ -206,6 +225,13 @@ class PermintaanServis2Fragment(_type: String) : Fragment(),
                         Toast.makeText(requireActivity(), message.toString(), Toast.LENGTH_SHORT)
                             .show()
                         binding.parentJadwalkan.visibility = View.INVISIBLE
+
+                        if (typeAkun == "admin") {
+                            servisSemua(type, "", "all")
+                        } else {
+                            servisSemua(type, idAkun, "cs")
+                        }
+
                     } else {
                         Toast.makeText(requireActivity(), message.toString(), Toast.LENGTH_SHORT)
                             .show()
@@ -221,5 +247,127 @@ class PermintaanServis2Fragment(_type: String) : Fragment(),
                 }
 
             })
+    }
+
+    override fun refreshView(
+        id: String,
+        idCs: String,
+        serviceName: String,
+        typeService: String,
+        vehicle: String,
+        userName: String,
+        note: String,
+        idService: String,
+        idUser: String,
+        month: String
+    ) {
+
+        binding.parentJadwalkanNext.visibility = View.VISIBLE
+
+        setDateTimeField("next")
+        binding.xJadwalkanNext.setOnClickListener {
+            binding.parentJadwalkanNext.visibility = View.INVISIBLE
+        }
+
+        binding.tvServiceNameNext.text = serviceName
+        binding.tvServiceTypeNext.text = typeService
+        binding.tvVechileNext.text = vehicle
+        binding.tvPemilikNext.text = userName
+        binding.tvNoteInfoNext.text = "Servis/jadwalkan Setiap "
+        binding.tvNoteNext.text = month+" bulan"
+
+        binding.inputJadwalNext.setOnClickListener {
+            datePickerDialog.show()
+        }
+        binding.btnJadwalkanNext.setOnClickListener {
+            if (!binding.inputJadwalNext.text.toString().isEmpty()) {
+                val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                val awal = SimpleDateFormat("dd MMMM yyyy")
+
+                val date: Date? = awal.parse(binding.inputJadwalNext.text.toString())
+                val tanggalConversi: String = simpleDateFormat.format(date!!)
+
+                jadwalkanNext(idService, idUser, idCs, tanggalConversi, id)
+            } else {
+                Toast.makeText(
+                    requireActivity(),
+                    "Pilih jadwal terlebih dahulu",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+
+    private fun jadwalkanNext(
+        idService: String,
+        idUser: String,
+        idCs: String,
+        date: String,
+        id: String
+    ) {
+        progressDialog.show()
+        ApiClient.instances.requestServicePost(
+            id,
+            idService,
+            idUser,
+            "next",
+            idCs,
+            date,
+            "",
+            ""
+        )
+            .enqueue(object : Callback<DataResponse> {
+                override fun onResponse(
+                    call: Call<DataResponse>,
+                    response: Response<DataResponse>
+                ) {
+
+                    val value = response.body()?.value
+                    val message = response.body()?.message
+
+                    if (response.isSuccessful && value == "1") {
+                        Toast.makeText(requireActivity(), message.toString(), Toast.LENGTH_SHORT)
+                            .show()
+                        binding.parentJadwalkanNext.visibility = View.INVISIBLE
+
+                        if (typeAkun == "admin") {
+                            servisSemua(type, "", "all")
+                        } else {
+                            servisSemua(type, idAkun, "cs")
+                        }
+
+                    } else {
+                        Toast.makeText(requireActivity(), message.toString(), Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    progressDialog.dismiss()
+                }
+
+                override fun onFailure(call: Call<DataResponse>, t: Throwable) {
+                    Toast.makeText(requireActivity(), t.message.toString(), Toast.LENGTH_SHORT)
+                        .show()
+
+                    progressDialog.dismiss()
+                }
+
+            })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (typeAkun == "admin") {
+            servisSemua(type, "", "all")
+        } else {
+            servisSemua(type, idAkun, "cs")
+        }
+    }
+
+    override fun refreshView() {
+        if (typeAkun == "admin") {
+            servisSemua(type, "", "all")
+        } else {
+            servisSemua(type, idAkun, "cs")
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.toyota.toyserv.fcm
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
 import android.util.Log
@@ -12,6 +13,7 @@ import com.toyota.toyserv.R
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
+    @SuppressLint("RestrictedApi")
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
 
@@ -31,7 +33,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             // Set the intent that will fire when the user taps the notification
             .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
 
         with(NotificationManagerCompat.from(this)) {
             // notificationId is a unique int for each notification that you must define

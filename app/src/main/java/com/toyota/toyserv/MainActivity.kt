@@ -34,8 +34,6 @@ class MainActivity : AppCompatActivity() {
         val type = sharedPref.getString(Constant.PREF_IS_LOGIN_TYPE)
         val id = sharedPref.getString(Constant.PREF_IS_LOGIN_ID)
 
-//        Toast.makeText(this, "name  : ${name.toString()}", Toast.LENGTH_SHORT).show()
-
         binding.tvNameProfile.text = name
         binding.tvTypeName.text = type
 
@@ -135,10 +133,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (sharedPref.getBoolean(Constant.PREF_IS_LOGIN)) {
-            Toast.makeText(this, "Sudah Login", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "Belum Login", Toast.LENGTH_SHORT).show()
+        if (!sharedPref.getBoolean(Constant.PREF_IS_LOGIN)) {
             startActivity(Intent(this, LoginActivity::class.java))
         }
     }
